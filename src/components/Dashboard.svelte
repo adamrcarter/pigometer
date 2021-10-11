@@ -10,7 +10,7 @@
 
     $: solPerPig = calculateSOLPerPig(lamports)
     $: usdPerPig = calculateUSDPerPig(lamports, usdtPrice)
-    $: piggybankSOL = Math.round((lamports/100000000) * 100) / 100
+    $: piggybankSOL = Math.round((lamports/1000000000) * 100) / 100
     
 </script>
 
