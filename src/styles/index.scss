@@ -5,6 +5,8 @@ html, body {
 }
 
 body {
+	max-height: 100vh;
+	overflow: hidden;
 	color: #333;
 	margin: 0;
 	box-sizing: border-box;

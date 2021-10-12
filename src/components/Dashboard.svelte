@@ -14,21 +14,43 @@
     
 </script>
 
-<li class="cont flex col center">
-    <div class="flex row center lg">
-        <div class="item item-lg">◎{piggybankSOL}</div>
-        <div class="item item-sm"> @ ${usdtPrice}</div>
+<div class="cont flex col center">
+    <div class="card">
+        <div class="pb-total">Total in piggybank wallet:</div>
+
+        <div class="flex row center lg">
+            <div class="item item-lg">◎{piggybankSOL}</div>
+            <div class="item item-sm"> @ ${usdtPrice}</div>
+        </div>
+        <div class="flex row center lg">
+        <div class="item">◎{solPerPig} /pp</div>
+        <div class="item">${usdPerPig} /pp</div>
     </div>
-    <div class="flex row center lg">
-    <div class="item">◎{solPerPig} /pp</div>
-    <div class="item">${usdPerPig} /pp</div>
     </div>
-</li>
+</div>
 
 <style>
 
     .flex{
         display: flex;
+    }
+
+    .card{
+        padding:10px;
+        border: 1px solid #fff;
+        border-radius: 10px;
+        background-color: rgb(238, 238, 238);
+        width: 500px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+        -webkit-box-shadow: 10px 10px 44px -5px rgba(0,0,0,0.75);
+        -moz-box-shadow: 10px 10px 44px -5px rgba(0,0,0,0.75);
+        box-shadow: 10px 10px 44px -5px rgba(0,0,0,0.75);
+
     }
 
     .col{
@@ -52,18 +74,24 @@
     .item{
         padding: 10px;
         padding-bottom: 5px;
-        color:rgb(254, 237, 237);
+        color:rgb(37, 37, 37);
         
     }
     .item-lg{
         font-size: 100px;
     }
     .cont{
-        height: 90%;
+        height: 80%;
+        z-index: 2;
+		position: relative;
     }
     @media (max-width: 640px) {
        .item-lg{
            font-size: 50px;
+       }
+       .card{
+            width: 90vw;
+            height: 200px
        }
        
        

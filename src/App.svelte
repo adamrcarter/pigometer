@@ -5,7 +5,14 @@ import Poller from "./components/Poller.svelte";
 	let name: string = 'world';
 </script>
 
-<main>
+<main> 
+	<img id="img-1" src="pig1.png">
+	<img id="img-2" src="pig2.png">
+	<img id="img-3" src="pig3.png">
+	<img id="img-4" src="pig4.png">
+
+	<h1 class="title">PIG<span id="pignose">o</span>METER</h1>
+
 <Poller let:lamports={lamports} let:usdtPrice={usdtPrice}>
 	<Dashboard {lamports} {usdtPrice}/>
 </Poller>
@@ -13,6 +20,7 @@ import Poller from "./components/Poller.svelte";
 
 <style lang="scss">
 	main {
+
 		text-align: center;
 		// max-width: 240px;
 		margin: 0 auto;
@@ -20,14 +28,50 @@ import Poller from "./components/Poller.svelte";
 		background-color: #FF6995;
 
 		h1 {
-			color: #ff3e00;
+			color: rgb(255, 253, 252);
 			text-transform: uppercase;
-			font-size: 4em;
-			font-weight: 100;
+			font-size: 2em;
+			font-weight: 800;
+			margin-block-start: 0em;
+			margin-block-end: 0em;
+			margin-inline-start: 0px;
+			margin-inline-end: 0px;
+			text-align: right;
+			padding: 10px;
 		}
 
 		// @media (min-width: 640px) {
 		// 	max-width: none;
 		// }
+	}
+	img{
+		position: absolute;
+	}
+	#pignose{
+		font-size: 1em;
+	}
+
+	#img-1{
+		left: -200px;
+		bottom: 0;
+		z-index: 1;
+	}
+	#img-2{
+		left: 75px;
+		bottom: 0;
+		z-index: 0;
+	}
+	#img-3{
+		right: 75px;
+		bottom: 0;
+		z-index: 0;
+		transform: scaleX(-1);
+
+	}
+	#img-4{
+		right: -200px;
+		bottom: 0;
+		z-index: 1;
+		transform: scaleX(-1);
 	}
 </style>
