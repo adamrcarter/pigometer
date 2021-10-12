@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const poll = (apiFunc : Function, ms = 4000) =>{
-    
+    apiFunc()
     return setInterval(apiFunc, ms);
 
 }
