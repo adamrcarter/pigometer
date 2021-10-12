@@ -9,7 +9,8 @@
 
     const apiFunc = async () =>{
         console.log(lamports, usdtPrice)
-        lamports = await getPiggyBankLamports();
+        const _lamports = await getPiggyBankLamports()
+        lamports = lamports > _lamports ? lamports : _lamports;
         usdtPrice = await getUSDSOLPrice();
     }
 
