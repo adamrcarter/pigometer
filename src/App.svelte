@@ -25,6 +25,7 @@ import Poller from "./components/Poller.svelte";
 		// max-width: 240px;
 		margin: 0 auto;
 		height: 100vh;
+
 		background-color: #FF6995;
 
 		h1 {
@@ -74,4 +75,33 @@ import Poller from "./components/Poller.svelte";
 		z-index: 1;
 		transform: scaleX(-1);
 	}
+
+	@media (max-width: 640px) {
+
+		#img-1{
+			width: auto;
+			height: 300px;
+			left: -130px
+		}
+		#img-2{
+			width: auto;
+			height: 300px;
+			left: -80px
+
+		}
+		#img-3{
+			width: auto;
+			height: 300px;
+			right: -80px
+
+		}	
+		#img-4{
+			width: auto;
+			height: 300px;
+			right: -130px
+
+		}
+	}
+
+
 </style>
