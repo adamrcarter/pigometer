@@ -66,7 +66,7 @@ import Poller from "./components/Poller.svelte";
 		#img-2{
 			width: auto;
 			height: 300px;
-			left: -80px;
+			left: -20px;
 			z-index: 0;
 
 
@@ -74,7 +74,7 @@ import Poller from "./components/Poller.svelte";
 		#img-3{
 			width: auto;
 			height: 300px;
-			right: -80px;
+			right: -20px;
 			z-index: 0;
 			transform: scaleX(-1);
 
@@ -88,7 +88,16 @@ import Poller from "./components/Poller.svelte";
 
 		}
 
+	@media (max-width: 640px) {
+		#img-2{
+			left: -80px;
+		}
 
+		#img-3{
+			right: -80px;
+		}
+
+	}
 
 
 </style>
