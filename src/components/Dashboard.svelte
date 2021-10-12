@@ -8,8 +8,8 @@
     export let lamports = 0
     export let usdtPrice = 0
 
-    $: solPerPig = calculateSOLPerPig(lamports)
-    $: usdPerPig = calculateUSDPerPig(lamports, usdtPrice)
+    $: solPerPig = Math.round(calculateSOLPerPig(lamports) * 100000) / 100000
+    $: usdPerPig = Math.round(calculateUSDPerPig(lamports, usdtPrice) * 100000) / 100000
     $: piggybankSOL = Math.round((lamports/1000000000) * 100) / 100
     
 </script>
