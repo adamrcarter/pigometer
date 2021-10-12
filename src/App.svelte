@@ -52,56 +52,43 @@ import Poller from "./components/Poller.svelte";
 		font-size: 1em;
 	}
 
+	img{
+		bottom:0;
+	}
+
 	#img-1{
-		left: -200px;
-		bottom: 0;
-		z-index: 1;
-	}
-	#img-2{
-		left: 75px;
-		bottom: 0;
-		z-index: 0;
-	}
-	#img-3{
-		right: 75px;
-		bottom: 0;
-		z-index: 0;
-		transform: scaleX(-1);
-
-	}
-	#img-4{
-		right: -200px;
-		bottom: 0;
-		z-index: 1;
-		transform: scaleX(-1);
-	}
-
-	@media (max-width: 640px) {
-
-		#img-1{
 			width: auto;
 			height: 300px;
-			left: -130px
+			left: -130px;
+			z-index: 1;
+
 		}
 		#img-2{
 			width: auto;
 			height: 300px;
-			left: -80px
+			left: -80px;
+			z-index: 0;
+
 
 		}
 		#img-3{
 			width: auto;
 			height: 300px;
-			right: -80px
+			right: -80px;
+			z-index: 0;
+			transform: scaleX(-1);
 
 		}	
 		#img-4{
 			width: auto;
 			height: 300px;
-			right: -130px
+			right: -130px;
+			z-index: 1;
+			transform: scaleX(-1);
 
 		}
-	}
+
+
 
 
 </style>
