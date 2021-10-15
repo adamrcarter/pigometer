@@ -99,12 +99,13 @@
     } */
 
     .dashboard-con{
-        width: 100%;
+        max-width:1600px;
         height: calc(100vh - 80px);
         overflow-y: scroll;
         padding-top: 30px;
         -ms-overflow-style: none;
         scrollbar-width: none;
+        margin:auto;
     }
 
     .dashboard-con::-webkit-scrollbar{
