@@ -83,7 +83,7 @@
     <div class="card sm">
         <div class="pb-total">SOL/USD</div>
         <div class="flex row center lg">
-        <div class="item item-md">{usdtPrice}</div>
+        <div class="item item-md">${usdtPrice}</div>
         <!-- <div class="item">${averageUSDperDay}</div> -->
         </div>
     </div>
