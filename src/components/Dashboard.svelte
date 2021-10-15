@@ -100,7 +100,7 @@
 
     .dashboard-con{
         width: 100%;
-        height: calc(100vh - 68px);
+        height: calc(100vh - 80px);
         overflow-y: scroll;
         padding-top: 30px;
         -ms-overflow-style: none;
@@ -129,6 +129,7 @@
     .even{
         justify-content: space-evenly;
         align-items: center;
+        padding-bottom: 60px;
     }
 
 
@@ -210,6 +211,8 @@
             margin-top: 10px;
 
        }
+
+
 
        .sm{
            width: 90vw;

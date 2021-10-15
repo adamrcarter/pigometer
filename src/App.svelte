@@ -148,11 +148,22 @@ import Poller from "./components/Poller.svelte";
 		#img-2{
 			left: -80px;
 		}
+	
 
 		#img-3{
 			right: -80px;
 		}
 
+	}
+	@media (max-width: 1024px) {
+
+	.footer{
+           background-color: #fff;
+		   padding: 10px;
+		   border-radius: 5%;
+		   z-index: 10;
+		   bottom: 0;
+       }
 	}
 
 
