@@ -1,17 +1,22 @@
 <script lang="ts">
-    import { getPiggyBankLamports, getUSDSOLPrice, poll } from "src/api/api";
+    import { getFloorMale, getNumListings, getPiggyBankLamports, getUSDSOLPrice, poll } from "src/api/api";
     import { onDestroy, onMount } from "svelte";
 
     export let ms = 4000;
     let lamports = 0
     let poller;
     let usdtPrice = 0;
+    let floor = 0
+    let numListedAlpha = 0
 
     const apiFunc = async () =>{
         console.log(lamports, usdtPrice)
         const _lamports = await getPiggyBankLamports()
         lamports = lamports > _lamports ? lamports : _lamports;
         usdtPrice = await getUSDSOLPrice();
+        floor = await getFloorMale()
+        numListedAlpha = await getNumListings()
+
     }
 
     onMount(() =>{
@@ -24,4 +29,4 @@
 
 </script>
 
-<slot {lamports} {usdtPrice}></slot>
+<slot {lamports} {usdtPrice} {floor} {numListedAlpha}></slot>

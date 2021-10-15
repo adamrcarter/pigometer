@@ -11,15 +11,30 @@ import Poller from "./components/Poller.svelte";
 	<img id="img-3" src="pig3.png">
 	<img id="img-4" src="pig4.png">
 
-	<h1 class="title">PIG<span id="pignose">o</span>METER</h1>
+	<div class='title'>
+		<h1>PIG<span id="pignose">o</span>METER</h1>
+	</div>
 
-<Poller let:lamports={lamports} let:usdtPrice={usdtPrice}>
-	<Dashboard {lamports} {usdtPrice}/>
+<Poller let:numListedAlpha={numListedAlpha} let:lamports={lamports} let:usdtPrice={usdtPrice} let:floor={floor}>
+	<Dashboard {lamports} {usdtPrice} {floor} {numListedAlpha}/>
 </Poller>
+
+<div class="footer">
+
+		<img class="ape" src="ape1.png"/>
+		<div class="col padd-4">
+		<div class="description">Developed by Professor mint, any donation is appreciated.</div>
+		<div class="address">EmDpqnBybTACHK7JVSNcQgRAXvGj17Nqn4mGFTpkfqiN</div>
+	</div>
+</div>
 </main>
 
 <style lang="scss">
 	main {
+
+		.pad-4{
+			padding-left: 4px;
+		}
 
 		text-align: center;
 		// max-width: 240px;
@@ -27,7 +42,16 @@ import Poller from "./components/Poller.svelte";
 		height: 100vh;
 
 		background-color: #FF6995;
-
+		.title{
+			height:30px;
+			display:flex;
+			align-items: center;
+			width:100%;
+			justify-content: flex-end;
+			height:50px;
+			
+			
+		}
 		h1 {
 			color: rgb(255, 253, 252);
 			text-transform: uppercase;
@@ -38,15 +62,32 @@ import Poller from "./components/Poller.svelte";
 			margin-inline-start: 0px;
 			margin-inline-end: 0px;
 			text-align: right;
-			padding: 10px;
+			padding-right: 10px;
 		}
 
 		// @media (min-width: 640px) {
 		// 	max-width: none;
 		// }
 	}
+	.footer{
+		font-size: 10px;
+		position: absolute;
+		bottom: 10px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+		flex-direction: row;
+		margin: auto;
+		width: 100vw;
+		color: rgb(61, 59, 59);
+
+	}
 	img{
 		position: absolute;
+	}
+	.col{
+		flex-direction: column;
 	}
 	#pignose{
 		font-size: 1em;
@@ -54,6 +95,21 @@ import Poller from "./components/Poller.svelte";
 
 	img{
 		bottom:0;
+	}
+	.ape{
+		position: unset;
+		width: 30px;
+		border-radius: 50%;
+		margin-right: 10px ;
+
+	}
+
+	.description{
+		text-align: left;
+	}
+
+	.address{
+		text-align: left;
 	}
 
 	#img-1{
@@ -92,11 +148,22 @@ import Poller from "./components/Poller.svelte";
 		#img-2{
 			left: -80px;
 		}
+	
 
 		#img-3{
 			right: -80px;
 		}
 
+	}
+	@media (max-width: 1024px) {
+
+	.footer{
+           background-color: #fff;
+		   padding: 10px;
+		   border-radius: 5%;
+		   z-index: 10;
+		   bottom: 0;
+       }
 	}
 
 

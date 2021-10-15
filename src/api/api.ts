@@ -41,3 +41,39 @@ export const getUSDSOLPrice = async () =>{
         console.error(`Error etching usdt price from solscan.\n${e.message}`)
     }
 }
+
+export const getFloorMale = async () =>{
+    console.log('Fetching male floor price')
+
+    const floorLamports : any = await axios.get("https://apis.alpha.art/api/v1/collection/piggy-sol-gang");
+    try{
+        if(floorLamports.status === 200){
+            console.log(floorLamports)
+            return floorLamports.data.floorPrice;
+        }
+        else{
+            console.error(`Error fetching floor price from solscan. Responseded with status ${floorLamports.status}`)
+    }
+    }
+    catch(e){
+        console.error(`Error etching floor price price from solscan.\n${e.message}`)
+    }
+
+}
+
+export const getNumListings = async () =>{
+    const json = {collectionId: "piggy-sol-gang", orderBy: "PRICE_LOW_TO_HIGH", status: ["BUY_NOW"], traits: []}
+    const result : any = await axios.post('https://apis.alpha.art/api/v1/collection', json)
+    try{
+        if(result.status === 200){
+            return result.data.total;
+        }
+        else{
+            console.error(`Error fetching floor price from solscan. Responseded with status ${result.status}`)
+    }
+    }
+    catch(e){
+        console.error(`Error etching floor price price from solscan.\n${e.message}`)
+    }
+
+}
