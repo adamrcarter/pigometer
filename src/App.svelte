@@ -13,8 +13,8 @@ import Poller from "./components/Poller.svelte";
 
 	<h1 class="title">PIG<span id="pignose">o</span>METER</h1>
 
-<Poller let:lamports={lamports} let:usdtPrice={usdtPrice}>
-	<Dashboard {lamports} {usdtPrice}/>
+<Poller let:numListedAlpha={numListedAlpha} let:lamports={lamports} let:usdtPrice={usdtPrice} let:floor={floor}>
+	<Dashboard {lamports} {usdtPrice} {floor} {numListedAlpha}/>
 </Poller>
 </main>
 
