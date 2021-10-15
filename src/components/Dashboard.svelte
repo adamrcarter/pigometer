@@ -100,7 +100,7 @@
 
     .dashboard-con{
         width: 100%;
-        height: 98vh;
+        height: calc(100vh - 68px);
         overflow-y: scroll;
         padding-top: 30px;
         -ms-overflow-style: none;
@@ -147,7 +147,7 @@
         -webkit-box-shadow: 10px 10px 44px -5px rgba(0,0,0,0.75);
         -moz-box-shadow: 10px 10px 44px -5px rgba(0,0,0,0.75);
         box-shadow: 10px 10px 44px -5px rgba(0,0,0,0.75);
-        margin-top: 10px;
+        margin-top: 38px;
         z-index: 100;
 
     }
@@ -171,6 +171,10 @@
     .lg{
         width:30vw;
         min-width: 300px;
+    }
+
+    .paddmd{
+        padding-top: 50px;
     }
 
     .center{
@@ -203,6 +207,7 @@
        .card{
             width: 90vw;
             height: 200px;
+            margin-top: 10px;
 
        }
 
