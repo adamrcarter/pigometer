@@ -43,7 +43,7 @@
     <div class="pb-total">Average daily per pig:</div>
     <div class="flex row center lg">
     <div class="item item-md">◎{averageSOLperDay}</div>
-    <div class="item">${averageUSDperDay}</div>
+    <div class="item">${Math.round(averageUSDperDay *100)/ 100}</div>
     </div>
 </div>
 <div class="card sm">
@@ -57,7 +57,7 @@
     <div class="pb-total">Total payout per pig:</div>
     <div class="flex row center lg">
     <div class="item item-md">◎{solPerPig}</div>
-    <div class="item">${usdPerPig}</div>
+    <div class="item">${Math.round(usdPerPig *100)/ 100}</div>
     </div>
 </div>
 
@@ -70,7 +70,7 @@
 
         <div class="flex row center lg">
             <div class="item item-lg">◎{piggybankSOL}</div>
-            <div class="item item-sm">${piggybankSOL *usdtPrice}</div>
+            <div class="item item-sm">${Math.round((piggybankSOL *usdtPrice) *100) / 100}</div>
         </div>
         <!-- <div class="flex row center lg">
         <div class="item">◎{solPerPig} /pp</div>
@@ -82,10 +82,10 @@
 
     <div class="card sm">
         <div class="pb-total">SOL/USD</div>
-        <div class="flex row center lg">
+        <!-- <div class="flex row center lg"> -->
         <div class="item item-md">${usdtPrice}</div>
         <!-- <div class="item">${averageUSDperDay}</div> -->
-        </div>
+        <!-- </div> -->
     </div>
     
 
