@@ -66,7 +66,7 @@
 <!-- </div> -->
 <!-- <div class="cont flex col center"> -->
     <div class="card">
-        <div class="pb-total">Total in piggybank wallet:</div>
+        <div class="pb-total">Total in DAO wallet:</div>
 
         <div class="flex row center lg">
             <div class="item item-lg">◎{piggybankSOL}</div>

@@ -9,7 +9,7 @@ export const poll = (apiFunc : Function, ms = 4000) =>{
 export const getPiggyBankLamports = async () =>{
     try{
         console.log('Fetching account details for piggybank')
-        const accountDetails = await axios.get("https://api.solscan.io/account?address=9BVu8rNwzBRv1uz35D2ZPzbXXKtejEKFBitL8m1ykBan")
+        const accountDetails = await axios.get("https://api.solscan.io/account?address=DaoSrx3wBdRM8oATwYwfD8BTkHwBibVVv2SLR8LMDnLP")
         if(accountDetails.status === 200){
             console.log(accountDetails)
             const data : any = accountDetails.data 
