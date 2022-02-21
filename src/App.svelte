@@ -1,8 +1,43 @@
 <script lang="ts">
+import { ParsedTransactionWithMeta } from "@solana/web3.js";
+
+import { createConnection, getTransactionsSigToDate } from "./api/api";
+
 import Dashboard from "./components/Dashboard.svelte";
 import Poller from "./components/Poller.svelte";
+import { ALPHA_PUBKEY, ALPHA_TAKEOVER_TIMESTAMP } from "./const";
+import { delay } from "./util";
 
-	let name: string = 'world';
+	(async() =>{
+		const conn = createConnection()
+		const txs = await getTransactionsSigToDate(ALPHA_PUBKEY, conn, ALPHA_TAKEOVER_TIMESTAMP)
+
+		let lamports = 0;
+		let txPromises = []
+		for(var i = 0; i< txs.length; i++){
+
+			if(txs[i].blockTime > ALPHA_TAKEOVER_TIMESTAMP && txs[i].err === null){
+				txPromises.push(conn.getParsedTransaction(txs[i].signature));
+				delay(10)
+			}
+		}
+
+		const resolvedTransasctions : ParsedTransactionWithMeta[] = await Promise.all(txPromises)	
+		resolvedTransasctions.forEach((parsedTX : ParsedTransactionWithMeta) => {
+			console.log(parsedTX)
+
+			// if(parsedTX.meta.innerInstructions.length > 1 ){
+			// 	const instuction = parsedTX.meta.innerInstructions[1].instructions[0];
+			// 	//@ts-ignore
+			// 	if(instuction.parsed.info.destination === ALPHA_PUBKEY.toBase58() && instuction.parsed.type === "transfer"){
+			// 		//@ts-ignore
+			// 		lamports = lamports + instuction.parsed.info.lamports
+			// 	}
+			// }
+		})
+		console.log(lamports)
+		
+	})()
 </script>
 
 <main> 
@@ -14,10 +49,10 @@ import Poller from "./components/Poller.svelte";
 	<div class='title'>
 		<h1>PIG<span id="pignose">o</span>METER</h1>
 	</div>
-
+<!-- 
 <Poller let:numListedAlpha={numListedAlpha} let:lamports={lamports} let:usdtPrice={usdtPrice} let:floor={floor}>
 	<Dashboard {lamports} {usdtPrice} {floor} {numListedAlpha}/>
-</Poller>
+</Poller> -->
 
 <div class="footer">
 

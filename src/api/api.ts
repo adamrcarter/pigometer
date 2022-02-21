@@ -1,8 +1,90 @@
+import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, ConfirmedSignaturesForAddress2Options, Connection, ParsedAccountData, ParsedTransactionWithMeta, PublicKey } from "@solana/web3.js";
 import axios from "axios";
+import { ALPHA_TAKEOVER_TIMESTAMP, USDC_MINT_ADDRESS, SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID } from "src/const";
+import { delay } from "src/util";
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+
 
 export const poll = (apiFunc : Function, ms = 4000) =>{
     apiFunc()
     return setInterval(apiFunc, ms);
+
+}
+export const createConnection = () =>{
+    return new Connection("https://winter-lively-breeze.solana-mainnet.quiknode.pro/d9be0db6fdd2fc011a961940b4c2cb18acfc2fa3/");
+
+}
+
+export const getUSDCBalance = async (conn : Connection, ownerPubkey : PublicKey)  : Promise<number> =>{
+
+    // const res = await conn.getParsedTokenAccountsByOwner(ownerPubkey, {mint : USDC_MINT_ADDRESS});
+    const account = await PublicKey.findProgramAddress([
+        ownerPubkey.toBuffer(),
+        TOKEN_PROGRAM_ID.toBuffer(),
+        USDC_MINT_ADDRESS.toBuffer()
+    ],
+        SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
+    )
+
+    const usdcInfo =  await conn.getTokenAccountBalance(account[0]);
+    const amount = usdcInfo.value.uiAmount
+    return amount
+
+}
+
+export const getSOLBalance = async (conn: Connection, pubkey : PublicKey) : Promise<number> => {
+
+    return conn.getBalance(pubkey)
+
+}
+
+export const getTotalBalance = async (conn : Connection, pubkey : PublicKey, usdcPrice) : Promise<number> =>{
+
+    const lamports = 
+
+}
+
+export const getParsedTransactions = async (conn : Connection, sigs : ConfirmedSignatureInfo[], timestamp = 0)  : Promise<ParsedTransactionWithMeta[]> =>{
+
+    let txPromises = [];
+    
+    for(var i = 0; i< sigs.length; i++){
+
+        if(sigs[i].blockTime > timestamp && sigs[i].err === null){
+            txPromises.push(conn.getParsedTransaction(sigs[i].signature));
+            delay(10)
+        }
+    }
+
+    const resolvedTransasctions : ParsedTransactionWithMeta[] = await Promise.all(txPromises);
+    return resolvedTransasctions;
+
+}
+
+export const getTransactionsSigToDate = async (pubkey : PublicKey, connection : Connection, toTimestamp? : number) : Promise<ConfirmedSignatureInfo[]> =>{
+
+    let transactions: ConfirmedSignatureInfo[] = []
+
+    while (true){
+        const config : ConfirmedSignaturesForAddress2Options = {
+            before: transactions.length ? transactions[transactions.length - 1].signature : undefined
+        };
+
+        console.log(`getting tx starting at ${config.before}`);
+
+
+        const txs = await connection.getConfirmedSignaturesForAddress2(pubkey, config);
+        console.log(txs)
+        transactions =transactions.concat(txs); 
+        
+        if( txs.length === 0  || (toTimestamp && txs[txs.length -1].blockTime < toTimestamp)){
+            break;
+        }
+
+        await delay(100)
+    }
+
+    return transactions
 
 }
 
