@@ -313,4 +313,6 @@ if (useBabel && (isProduction || useBabelInDevelopment)) {
 	svelte.use.unshift(loader);
 }
 
-export default config;
+// export default config;
+
+module.exports = config
