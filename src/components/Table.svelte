@@ -24,6 +24,8 @@ import Row from "./Row.svelte";
     let totalRoyaltiesEarnings = 0;
     let loading = true;
 
+    let total = 0;
+
     interface Row {
         num_cols : number,
         column_values : number[],
@@ -92,6 +94,12 @@ import Row from "./Row.svelte";
 
     }
 
+    const sumTotal = (rows : Row[]) =>{
+        for(const row of rows){
+            total = total + row.column_values[row.column_values.length -1]
+        }
+    }
+
     const initGov = async () =>{
         const sigs = await getTransactionsSigToDate(ALPHA_GOV_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
         const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
@@ -110,6 +118,8 @@ import Row from "./Row.svelte";
 
 
     }
+
+    $: sumTotal(rows);
 
 
     // $: solPerPig = Math.round(calculateSOLPerPig(lamports) * 100000) / 100000
@@ -174,6 +184,17 @@ import Row from "./Row.svelte";
             <div>Loading</div>    
         </div>
     {/if}
+     <div class="total row border-btm-none">
+        <div class="table-title weight-hv"></div>
+        <div class="table-title weight-hv"></div>
+         <div class="table-title weight-hv">
+            Total
+         </div>
+         <div class="table-title weight-hv">
+            ◎ {total}
+         </div>
+     </div>
+
 </div>
 
 
@@ -185,6 +206,19 @@ import Row from "./Row.svelte";
     .table-title{
         width: 25%;
         font-weight: 300;
+    }
+
+    .total{
+        margin-top: 30px;
+    }
+
+
+    .weight-hv{
+        font-weight: 800;
+    }
+
+    .total{
+        display: flex;
     }
 
     .loader{
@@ -201,7 +235,7 @@ import Row from "./Row.svelte";
         position: absolute;
         right: 25%;
         border-left: 1px solid #f0eded;
-        height: 400px;
+        height: 90%;
     }
 
     .table-title-con{
@@ -235,9 +269,9 @@ import Row from "./Row.svelte";
         scrollbar-width: none;
         margin: auto;
         background-color: #fff;
-        max-height: 500px;
+        max-height: 550px;
         border-radius: 15px;
-        height: 80vh;
+        height: 85vh;
         margin-top: 32px;
         position: relative;
     }
@@ -248,6 +282,11 @@ import Row from "./Row.svelte";
         padding-top: 10px;
         border-bottom: 1px #f0eded solid;
         display: flex;
+    }
+
+
+    .border-btm-none{
+        border-bottom: none;
     }
 
     .dashboard-con::-webkit-scrollbar{

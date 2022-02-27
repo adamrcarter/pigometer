@@ -29,9 +29,11 @@ export const getUSDCBalance = async (conn : Connection, ownerPubkey : PublicKey)
     try{
         const usdcInfo =  await conn.getTokenAccountBalance(account[0]);
         const amount = usdcInfo.value.uiAmount 
+        console.log(`${amount} USDC - wallet ${ownerPubkey.toBase58()}`)
         return amount
     }
     catch(e){
+        console.log(`No USDC token account found in wallet ${ownerPubkey.toBase58()}`)
         return 0
     }
 
@@ -48,7 +50,8 @@ export const getTotalSOLBalance = async (conn : Connection, pubkey : PublicKey, 
 
     const lamports = await getSOLBalance(conn, pubkey);
     const usdc = await getUSDCBalance(conn, pubkey);
-    const totalLamports = lamports + (usdc * usdcPrice)
+    console.log(`USDC to sol ${usdc} x ${usdcPrice} = ${usdc / usdcPrice}`)
+    const totalLamports = lamports + ((usdc / usdcPrice) * LAMPORT_SOL_FACTOR)
 
     return Math.round((totalLamports / LAMPORT_SOL_FACTOR) *100) /100
 
@@ -65,16 +68,13 @@ export const getParsedTransactions = async (conn : Connection, sigs : ConfirmedS
         for(var i = 0; i< chunk.length; i++){
 
             if(sigs[i].blockTime > timestamp && sigs[i].err === null){
-                txPromises.push(conn.getParsedTransaction(sigs[i].signature));
+                txPromises.push(conn.getParsedTransaction(sigs[i].signature).catch(x => console.log(x)));
                 // await delay(10)
             }
         }
-
-        console.log(txPromises)
         
         const resolvedTransasctions : ParsedTransactionWithMeta[] = await Promise.all(txPromises).catch(x => console.log(x)) as ParsedTransactionWithMeta[];
-        combined_txs = [...combined_txs, ...resolvedTransasctions]
-        console.log(resolvedTransasctions)
+        combined_txs = [...combined_txs, ...resolvedTransasctions.filter(x => x !== undefined)]
     }
 
     return combined_txs;
@@ -92,14 +92,18 @@ export const getTransactionsSigToDate = async (pubkey : PublicKey, connection : 
 
         console.log(`getting tx starting at ${config.before}`);
 
-
-        const txs = await connection.getConfirmedSignaturesForAddress2(pubkey, config);
-        console.log(txs)
-        transactions =transactions.concat(txs); 
-        
-        if( txs.length === 0  || (toTimestamp && txs[txs.length -1].blockTime < toTimestamp)){
-            break;
+        try{
+            const txs = await connection.getConfirmedSignaturesForAddress2(pubkey, config);
+            transactions =transactions.concat(txs); 
+            
+            if( txs.length === 0  || (toTimestamp && txs[txs.length -1].blockTime < toTimestamp)){
+                break;
+            }
         }
+        catch(e){
+            console.error("Error getting signatures for ", pubkey.toBase58())
+        }
+
 
         await delay(100)
     }
