@@ -1,3 +1,12 @@
 export const delay = (ms : number) => new Promise((res, rej) =>{
-    setInterval(() =>res(""), ms )
+    setTimeout(() =>res(""), ms )
 })
+
+export const sliceIntoChunks = (arr, chunkSize) => {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        const chunk = arr.slice(i, i + chunkSize);
+        res.push(chunk);
+    }
+    return res;
+}

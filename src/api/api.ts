@@ -1,8 +1,9 @@
 import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, ConfirmedSignaturesForAddress2Options, Connection, ParsedAccountData, ParsedTransactionWithMeta, PublicKey } from "@solana/web3.js";
 import axios from "axios";
 import { ALPHA_TAKEOVER_TIMESTAMP, USDC_MINT_ADDRESS, SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID } from "src/const";
-import { delay } from "src/util";
+import { delay, sliceIntoChunks } from "src/util";
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { LAMPORT_SOL_FACTOR } from "src/util/calculations";
 
 
 export const poll = (apiFunc : Function, ms = 4000) =>{
@@ -25,10 +26,15 @@ export const getUSDCBalance = async (conn : Connection, ownerPubkey : PublicKey)
     ],
         SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
     )
+    try{
+        const usdcInfo =  await conn.getTokenAccountBalance(account[0]);
+        const amount = usdcInfo.value.uiAmount 
+        return amount
+    }
+    catch(e){
+        return 0
+    }
 
-    const usdcInfo =  await conn.getTokenAccountBalance(account[0]);
-    const amount = usdcInfo.value.uiAmount
-    return amount
 
 }
 
@@ -38,26 +44,40 @@ export const getSOLBalance = async (conn: Connection, pubkey : PublicKey) : Prom
 
 }
 
-export const getTotalBalance = async (conn : Connection, pubkey : PublicKey, usdcPrice) : Promise<number> =>{
+export const getTotalSOLBalance = async (conn : Connection, pubkey : PublicKey, usdcPrice : number) : Promise<number> =>{
 
-    const lamports = 
+    const lamports = await getSOLBalance(conn, pubkey);
+    const usdc = await getUSDCBalance(conn, pubkey);
+    const totalLamports = lamports + (usdc * usdcPrice)
+
+    return Math.round((totalLamports / LAMPORT_SOL_FACTOR) *100) /100
 
 }
 
 export const getParsedTransactions = async (conn : Connection, sigs : ConfirmedSignatureInfo[], timestamp = 0)  : Promise<ParsedTransactionWithMeta[]> =>{
 
     let txPromises = [];
-    
-    for(var i = 0; i< sigs.length; i++){
+    let combined_txs = []
 
-        if(sigs[i].blockTime > timestamp && sigs[i].err === null){
-            txPromises.push(conn.getParsedTransaction(sigs[i].signature));
-            delay(10)
+    for (var chunk of sliceIntoChunks(sigs, 700)){
+
+    
+        for(var i = 0; i< chunk.length; i++){
+
+            if(sigs[i].blockTime > timestamp && sigs[i].err === null){
+                txPromises.push(conn.getParsedTransaction(sigs[i].signature));
+                // await delay(10)
+            }
         }
+
+        console.log(txPromises)
+
+        const resolvedTransasctions : ParsedTransactionWithMeta[] = await Promise.all(txPromises);
+        combined_txs = [...combined_txs, ...resolvedTransasctions]
+        console.log(resolvedTransasctions)
     }
 
-    const resolvedTransasctions : ParsedTransactionWithMeta[] = await Promise.all(txPromises);
-    return resolvedTransasctions;
+    return combined_txs;
 
 }
 

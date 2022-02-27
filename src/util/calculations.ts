@@ -17,7 +17,7 @@ export const secToDays = (seconds : number) =>{
     return seconds / 86400
 }
 
-export const earningsPer24hrs = (lamports : number, stamp : number ) =>{
+export const calculateAverageSOLPerDay = (lamports : number, stamp : number ) =>{
     const secondsSinceLaunch = stamp - ALPHA_LAUNCH_TIMETSAMP;
     const daysSinceLaunch = secToDays(secondsSinceLaunch);
     const lampPerDay = lamports /daysSinceLaunch
@@ -26,5 +26,5 @@ export const earningsPer24hrs = (lamports : number, stamp : number ) =>{
 }
 
 export const calculateAverageSOLPerPig = (lamports : number, stamp : number ) =>{
-    return earningsPer24hrs(lamports, stamp) /10000
+    return calculateAverageSOLPerDay(lamports, stamp) /10000
 }

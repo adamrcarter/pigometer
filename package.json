@@ -32,7 +32,9 @@
 		"svelte": "^3.32.3",
 		"svelte-check": "^1.1.35",
 		"svelte-loader": "^3.0.0",
+		"svelte-loading-spinners": "^0.1.7",
 		"svelte-preprocess": "^4.6.9",
+		"svelte-spinkit": "^1.0.3",
 		"tailwindcss": "^2.2.16",
 		"ts-loader": "^8.0.17",
 		"ts-node": "^9.1.1",
@@ -42,10 +44,13 @@
 		"webpack-dev-server": "^3.11.2"
 	},
 	"dependencies": {
-		"@solana/spl-token": "^0.2.0",
+		"@solana/spl-token": "^0.1.3",
 		"@solana/web3.js": "^1.35.0",
 		"axios": "^0.22.0",
-		"serve": "^11.3.2"
+		"crypto-browserify": "^3.12.0",
+		"path-browserify": "^1.0.1",
+		"serve": "^11.3.2",
+		"stream-browserify": "^3.0.0"
 	},
 	"browserslist": [
 		"defaults"

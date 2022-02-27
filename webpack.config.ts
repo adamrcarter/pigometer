@@ -61,6 +61,11 @@ const config: Configuration = {
 			// Note: Later in this config file, we'll automatically add paths from `tsconfig.compilerOptions.paths`
 			svelte: path.resolve('node_modules', 'svelte')
 		},
+		fallback: { 
+			"path": false,
+			"crypto": false,
+			"stream": require.resolve("stream-browserify") 
+		},
 		extensions: ['.mjs', '.js', '.ts', '.svelte'],
 		mainFields: ['svelte', 'browser', 'module', 'main']
 	},
