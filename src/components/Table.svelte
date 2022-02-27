@@ -100,7 +100,7 @@ import Row from "./Row.svelte";
         averageRoyalties24hr = Math.round(earningsPer24hrs(royaltiesEarnings, now, ALPHA_TAKEOVER_TIMESTAMP))
         totalRoyaltiesEarnings = Math.round(royaltiesEarnings / LAMPORT_SOL_FACTOR)
         const row : Row = {
-            name: "Royalties",
+            name: "Alpha Gov",
             num_cols : 5,
             column_values: [null, totalRoyaltiesEarnings, await getTotalSOLBalance(connection, ALPHA_GOV_PUBKEY, await getUSDSOLPrice())],
             pubkey: ALPHA_PUBKEY,
