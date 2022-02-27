@@ -209,7 +209,7 @@ if (isProduction) {
 						discardComments: { removeAll: !sourceMapsInProduction },
 					},
 				],
-			},
+			} as any,
 		})
 	);
 
