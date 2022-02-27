@@ -32,7 +32,7 @@ const sourceMapsInProduction = false;
 /**********                                             Webpack                                             **********/
 /*********************************************************************************************************************/
 
-import Webpack from 'webpack';
+// import Webpack from 'webpack';
 const Webpack = require("webpack")
 const WebpackDev = require("webpack-dev-server")
 const SveltePreprocess = require("svelte-preprocess")
