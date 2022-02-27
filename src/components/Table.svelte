@@ -5,7 +5,7 @@ import { LazyResult } from "postcss";
 
 import { createConnection, getParsedTransactions, getTotalSOLBalance, getTransactionsSigToDate, getUSDSOLPrice } from "src/api/api";
 import App from "src/App.svelte";
-import { ALPHA_PUBKEY, ALPHA_TAKEOVER_TIMESTAMP, DAO, ROYALTIES_PUBKEY } from "src/const";
+import { ALPHA_GOV_PUBKEY, ALPHA_PUBKEY, ALPHA_TAKEOVER_TIMESTAMP, DAO, ROYALTIES_PUBKEY } from "src/const";
 import { alphaVolume, earningsPer24hrs, getEarnings } from "src/metrics";
     import { calculateAverageSOLPerDay, calculateAverageSOLPerPig, calculateSOLPerPig, calculateUSDPerPig, LAMPORT_SOL_FACTOR } from "src/util/calculations";
     import { onMount } from "svelte";
@@ -64,7 +64,7 @@ import Row from "./Row.svelte";
     const initRoyalties = async () => {
         const sigs = await getTransactionsSigToDate(ROYALTIES_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
         const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
-        const royaltiesEarnings = getEarnings(txs, ALPHA_PUBKEY);
+        const royaltiesEarnings = getEarnings(txs, ROYALTIES_PUBKEY);
         const now = Math.floor(Date.now() / 1000)
         averageRoyalties24hr = Math.round(earningsPer24hrs(royaltiesEarnings, now, ALPHA_TAKEOVER_TIMESTAMP))
         totalRoyaltiesEarnings = Math.round(royaltiesEarnings / LAMPORT_SOL_FACTOR)
@@ -92,6 +92,25 @@ import Row from "./Row.svelte";
 
     }
 
+    const initGov = async () =>{
+        const sigs = await getTransactionsSigToDate(ALPHA_GOV_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
+        const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
+        const royaltiesEarnings = getEarnings(txs, ALPHA_GOV_PUBKEY);
+        const now = Math.floor(Date.now() / 1000)
+        averageRoyalties24hr = Math.round(earningsPer24hrs(royaltiesEarnings, now, ALPHA_TAKEOVER_TIMESTAMP))
+        totalRoyaltiesEarnings = Math.round(royaltiesEarnings / LAMPORT_SOL_FACTOR)
+        const row : Row = {
+            name: "Royalties",
+            num_cols : 5,
+            column_values: [null, totalRoyaltiesEarnings, await getTotalSOLBalance(connection, ALPHA_GOV_PUBKEY, await getUSDSOLPrice())],
+            pubkey: ALPHA_PUBKEY,
+            lastTX: ""
+        }
+        rows = [...rows, row]
+
+
+    }
+
 
     // $: solPerPig = Math.round(calculateSOLPerPig(lamports) * 100000) / 100000
     // $: usdPerPig = Math.round(calculateUSDPerPig(lamports, usdtPrice) * 100000) / 100000
@@ -104,8 +123,8 @@ import Row from "./Row.svelte";
         connection =  createConnection();
         await initAlphaStatsRPC();
         await initRoyalties();
+        await initGov();
         await initPiggyDAO();
-
 
         loading = false;
 
@@ -113,6 +132,21 @@ import Row from "./Row.svelte";
 
 </script>
 <div class="dashboard-con">
+
+    <div class="break"></div>
+
+    <div class ="table-title-con">
+        <div class="table-title"></div>
+        <div class="table-title"></div>
+        <div class="table-title">
+            Performance
+        </div>
+        <div class="table-title">
+            Position
+        </div>
+
+    </div>
+
     <div class="row">
         <div class="col-title">
             Wallet
@@ -127,6 +161,7 @@ import Row from "./Row.svelte";
             Balance
         </div>
     </div>
+
     {#if !loading}
         
         {#each rows as row}
@@ -134,24 +169,53 @@ import Row from "./Row.svelte";
         {/each}
 
     {:else}
-    <div class="loader">  
-        <Spinner/> 
-        <div>Loading</div>    
-    </div>
+        <div class="loader">  
+            <Spinner/> 
+            <div>Loading</div>    
+        </div>
     {/if}
 </div>
+
 
 <style>
 
     /* .centerself{
         justify-self: center;
     } */
+    .table-title{
+        width: 25%;
+        font-weight: 300;
+    }
 
+    .loader{
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        margin: auto;
+        background-color: #f0ededa3;
+        left:0px;
+        top:0px;
+    }
+
+    .break{
+        position: absolute;
+        right: 25%;
+        border-left: 1px solid #f0eded;
+        height: 400px;
+    }
+
+    .table-title-con{
+
+        width: 100%;
+        height: 50px;
+        display: flex;
+
+    }
     .col-title{
         width:25%;
     }
     .loader{
-        height:80%;
+        /* height:80%; */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -175,6 +239,7 @@ import Row from "./Row.svelte";
         border-radius: 15px;
         height: 80vh;
         margin-top: 32px;
+        position: relative;
     }
 
     .row{

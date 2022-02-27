@@ -6,7 +6,7 @@
 
 <div class="row_val">
     {#if value !== null}
-        {value}
+        ◎ {value}
     {/if}
 </div>
 

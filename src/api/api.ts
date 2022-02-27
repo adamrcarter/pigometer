@@ -71,8 +71,8 @@ export const getParsedTransactions = async (conn : Connection, sigs : ConfirmedS
         }
 
         console.log(txPromises)
-
-        const resolvedTransasctions : ParsedTransactionWithMeta[] = await Promise.all(txPromises);
+        
+        const resolvedTransasctions : ParsedTransactionWithMeta[] = await Promise.all(txPromises).catch(x => console.log(x)) as ParsedTransactionWithMeta[];
         combined_txs = [...combined_txs, ...resolvedTransasctions]
         console.log(resolvedTransasctions)
     }
