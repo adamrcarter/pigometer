@@ -100,7 +100,7 @@ const config: Configuration = {
 							sass: true,
 							postcss: {
 								plugins: [
-									Autoprefixer
+									Autoprefixer as any
 								]
 							}
 						})
