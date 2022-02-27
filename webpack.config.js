@@ -33,16 +33,27 @@ const sourceMapsInProduction = false;
 /*********************************************************************************************************************/
 
 import Webpack from 'webpack';
-import WebpackDev from 'webpack-dev-server';
-import SveltePreprocess from 'svelte-preprocess';
-import Autoprefixer from 'autoprefixer';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import CSSMinimizerPlugin from 'css-minimizer-webpack-plugin';
+const Webpack = require("webpack")
+const WebpackDev = require("webpack-dev-server")
+const SveltePreprocess = require("svelte-preprocess")
+const Autoprefixer = require("autoprefixer")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const CSSMinimizerPlugin = require("css-minimizer-webpack-plugin")
+const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+const fs = require("fs")
+const path = require("path")
+// import WebpackDev from 'webpack-dev-server';
 
-import fs from 'fs';
-import path from 'path';
+// import SveltePreprocess from 'svelte-preprocess';
+// import Autoprefixer from 'autoprefixer';
+// import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+// import CSSMinimizerPlugin from 'css-minimizer-webpack-plugin';
+
+// import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+
+// import fs from 'fs';
+// import path from 'path';
 
 const mode = process.env.NODE_ENV ?? 'development';
 const isProduction = mode === 'production';
