@@ -24,7 +24,7 @@
 
 </script>
 <div class="dashboard-con">
-<div class="flex mid even">
+<!-- <div class="flex mid even">
 <div class="card sm">
     <div class="pb-total">Alpha.art total volume:</div>
     <div class="flex row center lg">
@@ -50,7 +50,6 @@
     <div class="pb-total">Male pigs listed on Alpha.art:</div>
     <div class="flex row center lg">
     <div class="item item-md">{numListedAlpha}</div>
-    <!-- <div class="item">${averageUSDperDay}</div> -->
     </div>
 </div>
 <div class="card sm centerself">
@@ -62,9 +61,6 @@
 </div>
 
 
-
-<!-- </div> -->
-<!-- <div class="cont flex col center"> -->
     <div class="card">
         <div class="pb-total">Total in DAO wallet:</div>
 
@@ -72,24 +68,19 @@
             <div class="item item-lg">◎{piggybankSOL}</div>
             <div class="item item-sm">${Math.round((piggybankSOL *usdtPrice) *100) / 100}</div>
         </div>
-        <!-- <div class="flex row center lg">
-        <div class="item">◎{solPerPig} /pp</div>
-        <div class="item">${usdPerPig} /pp</div>
-        <div class="item">◎{averageSOLperDay} /pp</div> -->
+
 
     </div>
-    <!-- </div> -->
-
     <div class="card sm">
         <div class="pb-total">SOL/USD</div>
-        <!-- <div class="flex row center lg"> -->
         <div class="item item-md">${usdtPrice}</div>
-        <!-- <div class="item">${averageUSDperDay}</div> -->
-        <!-- </div> -->
     </div>
     
 
-</div>
+</div> -->
+
+<h1>Pigometer v2</h1>
+<h2>Coming Soon</h2>
 </div>
 
 <style>
@@ -100,12 +91,25 @@
 
     .dashboard-con{
         max-width:1600px;
-        height: calc(100vh - 80px);
+        height: calc(80vh - 80px);
         overflow-y: scroll;
-        padding-top: 30px;
+        /* padding-top: 30px; */
         -ms-overflow-style: none;
         scrollbar-width: none;
         margin:auto;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    h1{
+        font-size: 80px;
+        color: #fff;
+    }
+
+    h2{
+        color: rgb(255, 255, 255);
+        font-weight: 100;
     }
 
     .dashboard-con::-webkit-scrollbar{
