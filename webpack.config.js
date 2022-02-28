@@ -76,7 +76,7 @@ const config = {
 		fallback: { 
 			"path": false,
 			"crypto": false,
-			"stream": require.resolve("stream-browserify") 
+
 		},
 		extensions: ['.mjs', '.js', '.ts', '.svelte'],
 		mainFields: ['svelte', 'browser', 'module', 'main']
