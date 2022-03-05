@@ -11,6 +11,7 @@ import { alphaVolume, earningsPer24hrs, getEarnings } from "src/metrics";
     import { onMount } from "svelte";
 import Spinner from "./Spinner.svelte";
 import Row from "./Row.svelte";
+import axios from "axios";
 
     let solPerPig = 0
     let piggybankSOL = 0
@@ -45,10 +46,11 @@ import Row from "./Row.svelte";
 
    const initAlphaStatsRPC = async () =>{
        
-        const sigs = await getTransactionsSigToDate(ALPHA_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP)
-        const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP)
-        const alphaVolLamports = alphaVolume(txs);
-        const _alphaEarnings = getEarnings(txs, ALPHA_PUBKEY);
+        // const sigs = await getTransactionsSigToDate(ALPHA_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP)
+        // const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP)
+        const alpha_index = (await axios.get(`${ALPHA_PUBKEY.toBase58()}.json`)).data as any
+        const alphaVolLamports = alpha_index.volume;
+        const _alphaEarnings = alpha_index.earnings_lamports;
         volume = Math.round(alphaVolLamports / LAMPORT_SOL_FACTOR) 
         const now = Math.floor(Date.now() / 1000)
         averageAlpha24hr = Math.round(earningsPer24hrs(_alphaEarnings, now, ALPHA_TAKEOVER_TIMESTAMP))
@@ -64,9 +66,11 @@ import Row from "./Row.svelte";
     }
 
     const initRoyalties = async () => {
-        const sigs = await getTransactionsSigToDate(ROYALTIES_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
-        const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
-        const royaltiesEarnings = getEarnings(txs, ROYALTIES_PUBKEY);
+        // const sigs = await getTransactionsSigToDate(ROYALTIES_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
+        // const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
+        const royal_index = (await axios.get(`${ROYALTIES_PUBKEY.toBase58()}.json`)).data as any
+        const royaltiesEarnings= royal_index.earnings_lamports;
+        // const royaltiesEarnings = getEarnings(txs, ROYALTIES_PUBKEY);
         const now = Math.floor(Date.now() / 1000)
         averageRoyalties24hr = Math.round(earningsPer24hrs(royaltiesEarnings, now, ALPHA_TAKEOVER_TIMESTAMP))
         totalRoyaltiesEarnings = Math.round(royaltiesEarnings / LAMPORT_SOL_FACTOR)
@@ -101,12 +105,17 @@ import Row from "./Row.svelte";
     }
 
     const initGov = async () =>{
-        const sigs = await getTransactionsSigToDate(ALPHA_GOV_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
-        const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
-        const royaltiesEarnings = getEarnings(txs, ALPHA_GOV_PUBKEY);
+        // const sigs = await getTransactionsSigToDate(ALPHA_GOV_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
+        // const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
+        
+        const gov_index = (await axios.get(`${ALPHA_GOV_PUBKEY.toBase58()}.json`)).data as any
+        const gov_lamports= gov_index.earnings_lamports; 
+        const gov_usdc = gov_index.earnings_usdc
         const now = Math.floor(Date.now() / 1000)
-        averageRoyalties24hr = Math.round(earningsPer24hrs(royaltiesEarnings, now, ALPHA_TAKEOVER_TIMESTAMP))
-        totalRoyaltiesEarnings = Math.round(royaltiesEarnings / LAMPORT_SOL_FACTOR)
+        const gov_total_earnings = lamports + ((gov_usdc / await getUSDSOLPrice()) * LAMPORT_SOL_FACTOR)
+        console.log(gov_total_earnings, gov_lamports, gov_usdc)
+        averageRoyalties24hr = Math.round(earningsPer24hrs(gov_total_earnings, now, ALPHA_TAKEOVER_TIMESTAMP))
+        totalRoyaltiesEarnings = Math.round(gov_total_earnings / LAMPORT_SOL_FACTOR)
         const row : Row = {
             name: "Alpha Gov",
             num_cols : 5,

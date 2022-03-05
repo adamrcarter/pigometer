@@ -73,6 +73,7 @@ export const getParsedTransactions = async (conn : Connection, sigs : ConfirmedS
             }
         }
         
+        
         const resolvedTransasctions : ParsedTransactionWithMeta[] = await Promise.all(txPromises).catch(x => console.log(x)) as ParsedTransactionWithMeta[];
         combined_txs = [...combined_txs, ...resolvedTransasctions.filter(x => x !== undefined)]
     }
@@ -105,7 +106,7 @@ export const getTransactionsSigToDate = async (pubkey : PublicKey, connection : 
         }
 
 
-        await delay(100)
+        await delay(10)
     }
 
     return transactions
