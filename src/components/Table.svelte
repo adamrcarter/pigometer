@@ -1,5 +1,5 @@
 <script lang="ts">
-import { PublicKey } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
 import { LazyResult } from "postcss";
 
@@ -23,7 +23,7 @@ import axios from "axios";
     let totalAlphaEarnings = 0;
     let averageRoyalties24hr = 0;
     let totalRoyaltiesEarnings = 0;
-    let loading = true;
+    let loading = false;
 
     let total = 0;
 
@@ -31,14 +31,15 @@ import axios from "axios";
         num_cols : number,
         column_values : number[],
         pubkey : PublicKey,
-        lastTX: string,
+        last_tx: string,
+        last_usdc_tx : string,
         name : string
     }
 
     let connection 
 
     export let lamports = 0
-    export let usdtPrice = 0
+    export let usdcPrice = 0
     export let floor = 0
     export let numListedAlpha = 0;    
 
@@ -58,9 +59,10 @@ import axios from "axios";
         const row : Row = {
             name: "Alpha.art",
             num_cols : 5,
-            column_values: [volume, totalAlphaEarnings, await getTotalSOLBalance(connection, ALPHA_PUBKEY, await getUSDSOLPrice())],
+            column_values: [alphaVolLamports, _alphaEarnings, await getTotalSOLBalance(connection, ALPHA_PUBKEY, await getUSDSOLPrice())],
             pubkey: ALPHA_PUBKEY,
-            lastTX: ""
+            last_tx: alpha_index.lastTx,
+            last_usdc_tx: alpha_index.last_usdc_tx
         }
         rows = [...rows, row]
     }
@@ -71,15 +73,16 @@ import axios from "axios";
         const royal_index = (await axios.get(`${ROYALTIES_PUBKEY.toBase58()}.json`)).data as any
         const royaltiesEarnings= royal_index.earnings_lamports;
         // const royaltiesEarnings = getEarnings(txs, ROYALTIES_PUBKEY);
-        const now = Math.floor(Date.now() / 1000)
-        averageRoyalties24hr = Math.round(earningsPer24hrs(royaltiesEarnings, now, ALPHA_TAKEOVER_TIMESTAMP))
+        // const now = Math.floor(Date.now() / 1000)
+        // averageRoyalties24hr = Math.round(earningsPer24hrs(royaltiesEarnings, now, ALPHA_TAKEOVER_TIMESTAMP))
         totalRoyaltiesEarnings = Math.round(royaltiesEarnings / LAMPORT_SOL_FACTOR)
         const row : Row = {
             name: "Royalties",
             num_cols : 5,
-            column_values: [null, totalRoyaltiesEarnings, await getTotalSOLBalance(connection, ROYALTIES_PUBKEY, await getUSDSOLPrice())],
-            pubkey: ALPHA_PUBKEY,
-            lastTX: ""
+            column_values: [null, royaltiesEarnings, await getTotalSOLBalance(connection, ROYALTIES_PUBKEY, usdcPrice)],
+            pubkey: ROYALTIES_PUBKEY,
+            last_tx: royal_index.lastTx,
+            last_usdc_tx: royal_index.last_usdc_tx
         }
         rows = [...rows, row]
     }
@@ -89,9 +92,10 @@ import axios from "axios";
         const row: Row = {
             name: "Piggy DAO",
             num_cols: 5,
-            column_values: [null, null,await getTotalSOLBalance(connection, DAO, await getUSDSOLPrice()) ],
+            column_values: [null, null,await getTotalSOLBalance(connection, DAO, usdcPrice) ],
             pubkey: DAO,
-            lastTX : ""
+            last_tx: null,
+            last_usdc_tx: null
         }
 
         rows = [...rows, row]
@@ -99,9 +103,11 @@ import axios from "axios";
     }
 
     const sumTotal = (rows : Row[]) =>{
+        let _total = 0
         for(const row of rows){
-            total = total + row.column_values[row.column_values.length -1]
+            _total = _total + row.column_values[row.column_values.length -1]
         }
+        total = _total
     }
 
     const initGov = async () =>{
@@ -111,17 +117,20 @@ import axios from "axios";
         const gov_index = (await axios.get(`${ALPHA_GOV_PUBKEY.toBase58()}.json`)).data as any
         const gov_lamports= gov_index.earnings_lamports; 
         const gov_usdc = gov_index.earnings_usdc
+        console.log('usdc ', gov_usdc, await getUSDSOLPrice())
         const now = Math.floor(Date.now() / 1000)
-        const gov_total_earnings = lamports + ((gov_usdc / await getUSDSOLPrice()) * LAMPORT_SOL_FACTOR)
+        const gov_total_earnings = gov_lamports + ((gov_usdc / await getUSDSOLPrice()) * LAMPORT_SOL_FACTOR)
         console.log(gov_total_earnings, gov_lamports, gov_usdc)
         averageRoyalties24hr = Math.round(earningsPer24hrs(gov_total_earnings, now, ALPHA_TAKEOVER_TIMESTAMP))
         totalRoyaltiesEarnings = Math.round(gov_total_earnings / LAMPORT_SOL_FACTOR)
+
         const row : Row = {
             name: "Alpha Gov",
             num_cols : 5,
-            column_values: [null, totalRoyaltiesEarnings, await getTotalSOLBalance(connection, ALPHA_GOV_PUBKEY, await getUSDSOLPrice())],
-            pubkey: ALPHA_PUBKEY,
-            lastTX: ""
+            column_values: [null, gov_total_earnings, await getTotalSOLBalance(connection, ALPHA_GOV_PUBKEY, usdcPrice)],
+            pubkey: ALPHA_GOV_PUBKEY,
+            last_tx: gov_index.lastTx,
+            last_usdc_tx: gov_index.last_usdc_tx
         }
         rows = [...rows, row]
 
@@ -145,7 +154,7 @@ import axios from "axios";
         await initGov();
         await initPiggyDAO();
 
-        loading = false;
+        // loading = false;
 
     })
 
@@ -184,7 +193,7 @@ import axios from "axios";
     {#if !loading}
         
         {#each rows as row}
-            <Row {...row} connection={connection}/>
+            <Row usdcPrice={usdcPrice} {...row} connection={connection}/>
         {/each}
 
     {:else}
@@ -200,7 +209,7 @@ import axios from "axios";
             Total
          </div>
          <div class="table-title weight-hv">
-            ◎ {total}
+            ◎ {Math.round((total / LAMPORTS_PER_SOL) * 100 ) /100}
          </div>
      </div>
 

@@ -21,7 +21,7 @@ import { delay } from "./util";
 	</div>
 
 <Poller let:numListedAlpha={numListedAlpha} let:lamports={lamports} let:usdtPrice={usdtPrice} let:floor={floor}>
-	<Dashboard {lamports} {usdtPrice} {floor} {numListedAlpha}/>
+	<Dashboard usdcPrice={usdtPrice}/>
 </Poller>
 
 <div class="footer">
