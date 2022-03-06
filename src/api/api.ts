@@ -51,7 +51,7 @@ export interface SPLResponse {
     data : SPLTransactionsSolscan[]
 
 }
-export const poll = (apiFunc : Function, ms = 4000) =>{
+export const poll = (apiFunc : Function, ms = 20000) =>{
     apiFunc()
     return setInterval(apiFunc, ms);
 
@@ -98,21 +98,19 @@ export const get_sigs_until_solscan = async (pubkey : PublicKey, to_tx : string,
         limit : 100
     }
     try{
+        delay(10)
         const res = await axios.get('https://public-api.solscan.io/account/transactions', {params})
         const transactions : AccountTransactionsResponse[] = res.data
         
         const index = transactions.findIndex(tx => tx.txHash === to_tx);
-        console.log(index, pubkey.toBase58())
 
         if(index === -1){
             return get_sigs_until_solscan(pubkey, to_tx, sigs.concat(transactions))
         }
 
         if(index === 0 && sigs.length === 0){
-            console.log(`txs sol length for ${pubkey_string}`, sigs.length, index)
             return []
         }
-        // console.log('returning delta sigs for ', pubkey.toBase58())
         return transactions.slice(0, index)
 
     }
@@ -133,7 +131,6 @@ export const iterate_over_sisg = (sigs : any[], pubkey) : Promise<any[]> => new 
         try{
             const res = await axios.get(`https://public-api.solscan.io/transaction/${sig.txHash}`)
             const tx  = res.data as any
-            console.log("sss ", sig.txHash, tx)
             let include = false;
 
             for (const inst of tx.innerInstructions as any){
@@ -151,9 +148,7 @@ export const iterate_over_sisg = (sigs : any[], pubkey) : Promise<any[]> => new 
             if(include){
                 transactions = [...transactions, tx]
             }
-            console.log(i, sig.length)
             if(i === sigs.length -1 ){
-                console.log(`resolving ${pubkey.toBase58()}`)
                 resolve(transactions)
             }
         }
@@ -170,19 +165,14 @@ export const iterate_over_sisg = (sigs : any[], pubkey) : Promise<any[]> => new 
 
 export const get_txs_until_solscan = async(pubkey : PublicKey, to_tx : string) =>{
     const sigs = await get_sigs_until_solscan(pubkey, to_tx);
-    console.log(`fetching for ${pubkey.toBase58()} txs untill ${to_tx}`, sigs)
-
     let transactions : any[] = await iterate_over_sisg(sigs, pubkey); 
  
-    console.log("including txs for ", pubkey.toBase58(), transactions)
-
     return transactions;
 
 }
 
 
 export const get_usdc_txs_solscan = async (pubkey: PublicKey, to_tx : string, txs : SPLTransactionsSolscan[] = []) =>{
-    // console.log('before ', txs || undefined)
     const params = {
         account: pubkey.toBase58(),
         offset : txs.length > 0 ? txs.length : undefined,
@@ -190,12 +180,10 @@ export const get_usdc_txs_solscan = async (pubkey: PublicKey, to_tx : string, tx
     }
     try{
         const res = await axios.get('https://public-api.solscan.io/account/splTransfers', {params})
-        // console.log(res)
         let transactions : SPLTransactionsSolscan[] = (res.data as SPLResponse).data
 
         const filteredTransactions = transactions.filter(x => x.tokenAddress === USDC_MINT_ADDRESS.toBase58())    
         const index = filteredTransactions.findIndex(tx => tx.signature[0] === to_tx);
-        // console.log(index, pubkey.toBase58())
 
         if(transactions.length < 100 && index === -1){
             return filteredTransactions
@@ -205,7 +193,6 @@ export const get_usdc_txs_solscan = async (pubkey: PublicKey, to_tx : string, tx
         }
 
         if(index === 0 && txs.length === 0){
-            console.log('txs length', txs.length, index)
             return []
         }
         
@@ -229,31 +216,64 @@ export const createConnection = () =>{
 export const getUSDCBalance = async (conn : Connection, ownerPubkey : PublicKey)  : Promise<number> =>{
 
     // const res = await conn.getParsedTokenAccountsByOwner(ownerPubkey, {mint : USDC_MINT_ADDRESS});
-    const account = await PublicKey.findProgramAddress([
-        ownerPubkey.toBuffer(),
-        TOKEN_PROGRAM_ID.toBuffer(),
-        USDC_MINT_ADDRESS.toBuffer()
-    ],
-        SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
-    )
+    // const account = await PublicKey.findProgramAddress([
+    //     ownerPubkey.toBuffer(),
+    //     TOKEN_PROGRAM_ID.toBuffer(),
+    //     USDC_MINT_ADDRESS.toBuffer()
+    // ],
+    //     SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
+    // )
+    // try{
+    //     const usdcInfo =  await conn.getTokenAccountBalance(account[0]);
+    //     const amount = usdcInfo.value.uiAmount 
+    //     console.log(`${amount} USDC - wallet ${ownerPubkey.toBase58()}`)
+    //     return amount
+    // }
+    // catch(e){
+    //     console.log(`No USDC token account found in wallet ${ownerPubkey.toBase58()}`)
+    //     return 0
+    // }
+
     try{
-        const usdcInfo =  await conn.getTokenAccountBalance(account[0]);
-        const amount = usdcInfo.value.uiAmount 
-        console.log(`${amount} USDC - wallet ${ownerPubkey.toBase58()}`)
-        return amount
+        const accountDetails = await axios.get(`https://public-api.solscan.io/account/tokens?account=${ownerPubkey.toBase58()}`)
+        if(accountDetails.status === 200){
+            const data : any = accountDetails.data 
+            const usdToken = data.filter(token => token.tokenAddress === USDC_MINT_ADDRESS.toBase58() )
+     
+            if(usdToken.length > 0){
+                return usdToken[0].tokenAmount.uiAmount
+            }
+            return 0;
+        }
+        else{
+             console.error(`Error account details fetching from solscan. Responseded with status ${accountDetails.status}`)
+        }
     }
     catch(e){
-        console.log(`No USDC token account found in wallet ${ownerPubkey.toBase58()}`)
-        return 0
+        console.error(`Error account details fetching from solscan.\n${e.message}`)
     }
+
+
 
 
 }
 
 export const getSOLBalance = async (conn: Connection, pubkey : PublicKey) : Promise<number> => {
 
-    return conn.getBalance(pubkey)
-
+    try{
+        console.log('Fetching account lamports for ', pubkey.toBase58())
+        const accountDetails = await axios.get(`https://public-api.solscan.io/account/${pubkey.toBase58()}`)
+        if(accountDetails.status === 200){
+            const data : any = accountDetails.data 
+            return data.lamports;
+        }
+        else{
+             console.error(`Error account details fetching from solscan. Responseded with status ${accountDetails.status}`)
+        }
+    }
+    catch(e){
+        console.error(`Error account details fetching from solscan.\n${e.message}`)
+    }
 }
 
 export const getTotalSOLBalance = async (conn : Connection, pubkey : PublicKey, usdcPrice : number) : Promise<number> =>{
@@ -261,8 +281,12 @@ export const getTotalSOLBalance = async (conn : Connection, pubkey : PublicKey, 
     const lamports = await getSOLBalance(conn, pubkey);
     const usdc = await getUSDCBalance(conn, pubkey);
     console.log(`USDC to sol ${usdc} x ${usdcPrice} = ${usdc / usdcPrice}`)
-    const totalLamports = lamports + ((usdc / usdcPrice) * LAMPORT_SOL_FACTOR)
-
+    let usdc_sol = (usdc / usdcPrice)* LAMPORT_SOL_FACTOR
+    if( isNaN(usdc_sol)){
+        usdc_sol = 0;
+    }
+    const totalLamports = lamports + usdc_sol
+    
     return totalLamports
 
 }
@@ -347,7 +371,6 @@ export const getUSDSOLPrice = async () =>{
     const solUSD : any= await axios.get("https://api.solscan.io/market?symbol=SOL");
     try{
         if(solUSD.status === 200){
-            console.log(solUSD)
             return solUSD.data.data.priceUsdt;
         }
         else{
@@ -365,7 +388,6 @@ export const getFloorMale = async () =>{
     const floorLamports : any = await axios.get("https://apis.alpha.art/api/v1/collection/piggy-sol-gang");
     try{
         if(floorLamports.status === 200){
-            console.log(floorLamports)
             return floorLamports.data.floorPrice;
         }
         else{

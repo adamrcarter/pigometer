@@ -12,8 +12,8 @@ import { delay } from "./util";
 
 <main> 
 	<img id="img-1" src="pig1.png">
-	<img id="img-2" src="pig2.png">
-	<img id="img-3" src="pig3.png">
+	<img id="img-2" src="pig3.png">
+	<img id="img-3" src="pig2.png">
 	<img id="img-4" src="pig4.png">
 
 	<div class='title'>
