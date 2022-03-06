@@ -13,6 +13,7 @@ import Spinner from "./Spinner.svelte";
 import Row from "./Row.svelte";
 import axios from "axios";
 import { delay } from "src/util";
+import ListRow from "./ListRow.svelte";
 
     let volume = 0;
     let averageAlpha24hr = 0;
@@ -181,10 +182,12 @@ import { delay } from "src/util";
     </div>
 
     {#if !loading}
-        
+<!--         
         {#each rows as row}
             <Row usdcPrice={usdcPrice} {...row} connection={connection}/>
-        {/each}
+        {/each} -->
+
+        <ListRow {usdcPrice} {rows} {connection}/>
 
     {:else}
         <div class="loader">  
