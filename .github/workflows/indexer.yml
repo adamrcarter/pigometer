@@ -9,5 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
+      with:
+        node-version: '14'
     - run: npm i
     - run: node src/scripts/TransactionPuller.js https://winter-lively-breeze.solana-mainnet.quiknode.pro/d9be0db6fdd2fc011a961940b4c2cb18acfc2fa3/ 4Ueko5sCk5WhPmY9VGeKJSYwdKW7nru3zWcbmoMxtbV2 59TwQVuAPeJ7sjVdKCVANT32AapDgNLpVrmy7HnofAWQ 7NsngNMtXJNdHgeK4znQDZ5xVzT2nkGoGRGhMWApejCV DaoSrx3wBdRM8oATwYwfD8BTkHwBibVVv2SLR8LMDnLP
