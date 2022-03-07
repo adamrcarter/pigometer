@@ -47,7 +47,7 @@ import ListRow from "./ListRow.svelte";
        
         // const sigs = await getTransactionsSigToDate(ALPHA_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP)
         // const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP)
-        const alpha_index = (await axios.get(`https://pigometer.app/${ALPHA_PUBKEY.toBase58()}.json`)).data as any
+        const alpha_index = (await axios.get(`${ALPHA_PUBKEY.toBase58()}.json`)).data as any
         const alphaVolLamports = alpha_index.volume;
         const _alphaEarnings = alpha_index.earnings_lamports;
         volume = Math.round(alphaVolLamports / LAMPORT_SOL_FACTOR) 
@@ -62,11 +62,11 @@ import ListRow from "./ListRow.svelte";
             last_tx: alpha_index.lastTx,
             last_usdc_tx: alpha_index.last_usdc_tx
         }
-        rows = [...rows, row]
+        rows[0] =  row
     }
 
     const fetchRoyalties = async () => {
-        const royal_index = (await axios.get(`https://pigometer.app/${ROYALTIES_PUBKEY.toBase58()}.json`)).data as any
+        const royal_index = (await axios.get(`${ROYALTIES_PUBKEY.toBase58()}.json`)).data as any
         const royaltiesEarnings= royal_index.earnings_lamports;
         totalRoyaltiesEarnings = Math.round(royaltiesEarnings / LAMPORT_SOL_FACTOR)
         const row : Row = {
@@ -77,7 +77,7 @@ import ListRow from "./ListRow.svelte";
             last_tx: royal_index.lastTx,
             last_usdc_tx: royal_index.last_usdc_tx
         }
-        rows = [...rows, row]
+        rows[1] =  row
     }
 
     const fetchPiggyDAO = async () =>{
@@ -91,14 +91,17 @@ import ListRow from "./ListRow.svelte";
             last_usdc_tx: null
         }
 
-        rows = [...rows, row]
+        rows[3] =  row
 
     }
 
     const sumTotal = (rows : Row[]) =>{
         let _total = 0
         for(const row of rows){
-            _total = _total + row.column_values[row.column_values.length -1]
+            if(row){
+                _total = _total + row.column_values[row.column_values.length -1]
+
+            }
         }
         total = _total
     }
@@ -107,7 +110,7 @@ import ListRow from "./ListRow.svelte";
         // const sigs = await getTransactionsSigToDate(ALPHA_GOV_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
         // const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
         
-        const gov_index = (await axios.get(`https://pigometer.app/${ALPHA_GOV_PUBKEY.toBase58()}.json`)).data as any
+        const gov_index = (await axios.get(`${ALPHA_GOV_PUBKEY.toBase58()}.json`)).data as any
         const gov_lamports= gov_index.earnings_lamports; 
         const gov_usdc = gov_index.earnings_usdc
         const now = Math.floor(Date.now() / 1000)
@@ -123,13 +126,21 @@ import ListRow from "./ListRow.svelte";
             last_tx: gov_index.lastTx,
             last_usdc_tx: gov_index.last_usdc_tx
         }
-        rows = [...rows, row]
+        rows[2] = row
 
 
     }
+    const setState = (usdcPrice) =>{
+        if(usdcPrice !== 0){
+            fetchAlpha();
+            fetchRoyalties();
+            fetchGov();
+            fetchPiggyDAO();
+        }
 
+    }
     $: sumTotal(rows);
-
+    $: setState(usdcPrice)
 
     // $: solPerPig = Math.round(calculateSOLPerPig(lamports) * 100000) / 100000
     // $: usdPerPig = Math.round(calculateUSDPerPig(lamports, usdtPrice) * 100000) / 100000
@@ -140,18 +151,14 @@ import ListRow from "./ListRow.svelte";
 
     onMount(async () =>{
         connection =  createConnection();
-        await delay(10)
-        await fetchAlpha();
-        await fetchRoyalties();
-        await fetchGov();
-        await fetchPiggyDAO();
-
-        poller = poll(async () =>{
-            await fetchAlpha()
-            await fetchRoyalties()
-            await fetchGov()
-            await fetchPiggyDAO()
-        }, 10000)
+        await delay(100)
+  
+        // poller = poll(async () =>{
+        //     fetchAlpha()
+        //     fetchRoyalties()
+        //     fetchGov()
+        //     fetchPiggyDAO()
+        // }, 10000)
 
         // loading = false;
 

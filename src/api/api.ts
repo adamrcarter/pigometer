@@ -280,6 +280,9 @@ export const getTotalSOLBalance = async (conn : Connection, pubkey : PublicKey, 
 
     const lamports = await getSOLBalance(conn, pubkey);
     const usdc = await getUSDCBalance(conn, pubkey);
+    if(usdcPrice === 0){
+        
+    }
     console.log(`USDC to sol ${usdc} x ${usdcPrice} = ${usdc / usdcPrice}`)
     let usdc_sol = (usdc / usdcPrice)* LAMPORT_SOL_FACTOR
     if( isNaN(usdc_sol)){

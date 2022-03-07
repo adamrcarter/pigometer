@@ -78,15 +78,17 @@ import TableValue from "./TableValue.svelte";
     onDestroy(() =>{
         // clearInterval(poller)
     })
-
+    $:console.log(column_values)
 </script>
 
 <div class="row">
 
     <div style="width: 25%;">{name}</div>
-    {#each column_values as val }
+    {#if column_values}
+        {#each column_values as val }
             <TableValue value={val} isLoading={false}/>
-    {/each}
+        {/each}
+    {/if}
 
 </div>
 
