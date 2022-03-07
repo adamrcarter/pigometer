@@ -42,6 +42,8 @@
 		"webpack-dev-server": "^3.11.2"
 	},
 	"dependencies": {
+		"@solana/spl-token": "^0.2.0",
+		"@solana/web3.js": "^1.36.0",
 		"axios": "^0.22.0",
 		"serve": "^11.3.2"
 	},
