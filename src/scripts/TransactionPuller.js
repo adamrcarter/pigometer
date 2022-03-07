@@ -196,7 +196,7 @@
         let lamports = 0;
         transactions.forEach((parsedTX ) => {
 
-            if(parsedTX?.meta?.innerInstructions.length > 0 ){
+            if(parsedTX?.meta?.innerInstructions.length > 1 ){
                 // console.log(parsedTX.blockTime) 
                 const instructions = parsedTX.meta.innerInstructions[1].instructions;
                 instructions.forEach((inst) => {
