@@ -1,7 +1,7 @@
 name: Index accounts
 on:
   schedule:
-    - cron: '15 * * * *'
+    - cron: '01 * * * *'
 
 jobs:
   test_schedule:
