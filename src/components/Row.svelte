@@ -72,11 +72,11 @@ import TableValue from "./TableValue.svelte";
     }
     
     onMount(() =>{
-        poller = poll(apiFunc, 20000)
+        // poller = poll(apiFunc, 20000)
     })
 
     onDestroy(() =>{
-        clearInterval(poller)
+        // clearInterval(poller)
     })
 
 </script>

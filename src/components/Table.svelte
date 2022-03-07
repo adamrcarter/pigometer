@@ -3,12 +3,12 @@ import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
 import { LazyResult } from "postcss";
 
-import { createConnection, getParsedTransactions, getTotalSOLBalance, getTransactionsSigToDate, getUSDSOLPrice } from "src/api/api";
+import { createConnection, getParsedTransactions, getTotalSOLBalance, getTransactionsSigToDate, getUSDSOLPrice, poll } from "src/api/api";
 import App from "src/App.svelte";
 import { ALPHA_GOV_PUBKEY, ALPHA_PUBKEY, ALPHA_TAKEOVER_TIMESTAMP, DAO, ROYALTIES_PUBKEY } from "src/const";
 import { alphaVolume, earningsPer24hrs, getEarnings } from "src/metrics";
     import { calculateAverageSOLPerDay, calculateAverageSOLPerPig, calculateSOLPerPig, calculateUSDPerPig, LAMPORT_SOL_FACTOR } from "src/util/calculations";
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
 import Spinner from "./Spinner.svelte";
 import Row from "./Row.svelte";
 import axios from "axios";
@@ -21,6 +21,7 @@ import ListRow from "./ListRow.svelte";
     let averageRoyalties24hr = 0;
     let totalRoyaltiesEarnings = 0;
     let loading = false;
+    let poller ;
 
     let total = 0;
 
@@ -42,11 +43,11 @@ import ListRow from "./ListRow.svelte";
 
     let rows = []
 
-   const initAlphaStatsRPC = async () =>{
+   const fetchAlpha = async () =>{
        
         // const sigs = await getTransactionsSigToDate(ALPHA_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP)
         // const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP)
-        const alpha_index = (await axios.get(`${ALPHA_PUBKEY.toBase58()}.json`)).data as any
+        const alpha_index = (await axios.get(`https://pigometer.app/${ALPHA_PUBKEY.toBase58()}.json`)).data as any
         const alphaVolLamports = alpha_index.volume;
         const _alphaEarnings = alpha_index.earnings_lamports;
         volume = Math.round(alphaVolLamports / LAMPORT_SOL_FACTOR) 
@@ -64,8 +65,8 @@ import ListRow from "./ListRow.svelte";
         rows = [...rows, row]
     }
 
-    const initRoyalties = async () => {
-        const royal_index = (await axios.get(`${ROYALTIES_PUBKEY.toBase58()}.json`)).data as any
+    const fetchRoyalties = async () => {
+        const royal_index = (await axios.get(`https://pigometer.app/${ROYALTIES_PUBKEY.toBase58()}.json`)).data as any
         const royaltiesEarnings= royal_index.earnings_lamports;
         totalRoyaltiesEarnings = Math.round(royaltiesEarnings / LAMPORT_SOL_FACTOR)
         const row : Row = {
@@ -79,7 +80,7 @@ import ListRow from "./ListRow.svelte";
         rows = [...rows, row]
     }
 
-    const initPiggyDAO = async () =>{
+    const fetchPiggyDAO = async () =>{
 
         const row: Row = {
             name: "Piggy DAO",
@@ -102,11 +103,11 @@ import ListRow from "./ListRow.svelte";
         total = _total
     }
 
-    const initGov = async () =>{
+    const fetchGov = async () =>{
         // const sigs = await getTransactionsSigToDate(ALPHA_GOV_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
         // const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
         
-        const gov_index = (await axios.get(`${ALPHA_GOV_PUBKEY.toBase58()}.json`)).data as any
+        const gov_index = (await axios.get(`https://pigometer.app/${ALPHA_GOV_PUBKEY.toBase58()}.json`)).data as any
         const gov_lamports= gov_index.earnings_lamports; 
         const gov_usdc = gov_index.earnings_usdc
         const now = Math.floor(Date.now() / 1000)
@@ -140,13 +141,24 @@ import ListRow from "./ListRow.svelte";
     onMount(async () =>{
         connection =  createConnection();
         await delay(10)
-        await initAlphaStatsRPC();
-        await initRoyalties();
-        await initGov();
-        await initPiggyDAO();
+        await fetchAlpha();
+        await fetchRoyalties();
+        await fetchGov();
+        await fetchPiggyDAO();
+
+        poller = poll(async () =>{
+            await fetchAlpha()
+            await fetchRoyalties()
+            await fetchGov()
+            await fetchPiggyDAO()
+        }, 10000)
 
         // loading = false;
 
+    })
+
+    onDestroy(() => {
+        clearInterval(poller)
     })
 
 </script>
