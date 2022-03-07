@@ -46,13 +46,13 @@
      const delay = (ms ) => new Promise((res, rej) =>{
         setTimeout(() =>res(""), ms )
     })
-     const sliceIntoChunks = (arr, chunkSize) => {
+     const sliceIntoChunks =(arr, chunkSize) => {
         const res = [];
         for (let i = 0; i < arr.length; i += chunkSize) {
             const chunk = arr.slice(i, i + chunkSize);
             res.push(chunk);
         }
-        return res;
+        return res
     }
     
     const loadJson = async (wallet_address) =>{
@@ -91,7 +91,7 @@
             try{
                 const txs = await connection.getConfirmedSignaturesForAddress2(pubkey, config);
     
-                transactions =transactions.concat(txs); 
+                transactions = transactions.concat(txs); 
                 console.log(transactions[0], transactions[transactions.length -1])
                 
                 if( txs.length === 0  || (toTimestamp && txs[txs.length -1].blockTime < toTimestamp)){
@@ -106,7 +106,7 @@
             await delay(10)
         }
         console.log('finish', transactions[0], transactions[transactions.length -1])
-    
+        // transactions.forEach(x => console.log(x.blockTime))
         return transactions
     
     }
@@ -125,54 +125,79 @@
     
             try{
                 const txs = await connection.getConfirmedSignaturesForAddress2(pubkey, config);
-                transactions =transactions.concat(txs); 
+                transactions = transactions.concat(txs); 
                 
                 if( txs.length === 0  || (toSig && txs[txs.length -1].signature === toSig)){
                     break;
                 }
             }
             catch(e){
+                console.log(e)
                 console.error("Error getting signatures for ", pubkey.toBase58())
             }
     
     
             await delay(10)
         }
-    
+
         return transactions
     
     }
-    
-     const getParsedTransactions = async (conn , sigs , timestamp = 0) =>{
-    
-        let txPromises = [];
+    const _getParsedTransactions = async (conn, sigs, timestamp =0 ) => {return new Promise(async (res, rej) =>{
+        const chunks = sliceIntoChunks(sigs, 700)
+        // console.log("sigss", chunks.length, sigs.length)
+        // console.log(chunks)
+
+        if(sigs.length === 0){
+            res([])
+        }
         let combined_txs = []
-    
-        for (var chunk of sliceIntoChunks(sigs, 700)){
-    
+        for(let index = 0; index <chunks.length; index++){
+            let chunk = chunks[index]
             console.log(`Getting parsed tx's...`)
-        
-            for(var i = 0; i< chunk.length; i++){
+            let txPromises = []
+            for(let i = 0; i< chunk.length; i++){
     
-                if(sigs[i].blockTime > timestamp && sigs[i].err === null){
-                    txPromises.push(conn.getParsedTransaction(sigs[i].signature).catch(x => console.log(x)));
+                if(chunk[i].blockTime > timestamp && chunk[i].err === null){
+                    
+                     txPromises = [conn.getParsedTransaction(chunk[i].signature).catch(x => console.log(x)), ...txPromises];
                     // await delay(10)
                 }
             }
             
             const resolvedTransasctions  = await Promise.all(txPromises).catch(x => console.log(x)) ;
-            combined_txs = [...combined_txs, ...resolvedTransasctions.filter(x => x !== undefined)]
+            combined_txs = [ ...combined_txs, ...resolvedTransasctions.filter(x => x !== undefined)]
+            console.log(chunks.length -1, index)
+            if(index === chunks.length -1){
+                combined_txs.sort((a, b) => a.blockTime > b.blockTime ? -1 : 1)
+                res(combined_txs)
+
+            }
+        
         }
+            
+
+    })}
+        
+
+    
+     const getParsedTransactions = async (conn , sigs , timestamp = 0) =>{
+    
+        let txPromises = [];
+        // sigs.forEach(x=>console.log(x.blockTime))
+
+        const combined_txs = await _getParsedTransactions(conn, sigs, timestamp);
+
         return combined_txs;
     
     }
     
     const alphaVolume = (transactions) => {
         let lamports = 0;
-        console.log(transactions[0])
         transactions.forEach((parsedTX ) => {
-            
-            if(parsedTX?.meta.innerInstructions.length > 1 ){
+
+            if(parsedTX?.meta?.innerInstructions.length > 0 ){
+                // console.log(parsedTX.blockTime) 
                 const instructions = parsedTX.meta.innerInstructions[1].instructions;
                 instructions.forEach((inst) => {
                     if(inst.parsed.type === "transfer" && inst.program === "system"){
@@ -212,7 +237,6 @@
                 })
     
                 }
-                console.log(parsedTX.transaction)
             if(parsedTX?.transaction?.message?.instructions.length > 0){
     
                 parsedTX?.transaction?.message?.instructions.forEach(transfer => {
