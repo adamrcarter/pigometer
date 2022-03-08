@@ -247,7 +247,9 @@ export const getUSDCBalance = async (conn : Connection, ownerPubkey : PublicKey)
         }
         else{
              console.error(`Error account details fetching from solscan. Responseded with status ${accountDetails.status}`)
-        }
+             return 0
+
+            }
     }
     catch(e){
         console.error(`Error account details fetching from solscan.\n${e.message}`)

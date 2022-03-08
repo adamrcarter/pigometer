@@ -130,7 +130,9 @@ import ListRow from "./ListRow.svelte";
 
 
     }
-    const setState = (usdcPrice) =>{
+    const setState = async (usdcPrice) =>{
+        console.log("setting state")
+
         if(usdcPrice !== 0){
             fetchAlpha();
             fetchRoyalties();
@@ -153,12 +155,12 @@ import ListRow from "./ListRow.svelte";
         connection =  createConnection();
         await delay(100)
   
-        // poller = poll(async () =>{
-        //     fetchAlpha()
-        //     fetchRoyalties()
-        //     fetchGov()
-        //     fetchPiggyDAO()
-        // }, 10000)
+        poller = poll(async () =>{
+            fetchAlpha()
+            fetchRoyalties()
+            fetchGov()
+            fetchPiggyDAO()
+        }, 10000)
 
         // loading = false;
 

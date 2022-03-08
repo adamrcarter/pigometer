@@ -2,7 +2,7 @@
     import { getFloorMale, getNumListings, getPiggyBankLamports, getUSDSOLPrice, poll } from "src/api/api";
     import { onDestroy, onMount } from "svelte";
 
-    export let ms = 100000;
+    export let ms = 10000;
     let lamports = 0
     let poller;
     let usdtPrice = 0;
