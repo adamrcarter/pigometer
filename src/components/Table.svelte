@@ -14,6 +14,7 @@ import Row from "./Row.svelte";
 import axios from "axios";
 import { delay } from "src/util";
 import ListRow from "./ListRow.svelte";
+import TableValue from "./TableValue.svelte";
 
     let volume = 0;
     let averageAlpha24hr = 0;
@@ -222,9 +223,7 @@ import ListRow from "./ListRow.svelte";
          <div class="table-title weight-hv">
             Total
          </div>
-         <div class="table-title weight-hv">
-            ◎ {Math.round((total / LAMPORTS_PER_SOL) * 100 ) /100}
-         </div>
+        <TableValue value={total}/>
      </div>
 
 </div>

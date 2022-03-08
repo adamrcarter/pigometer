@@ -83,10 +83,14 @@ import TableValue from "./TableValue.svelte";
 
 <div class="row">
 
-    <div style="width: 25%;">{name}</div>
+    <div style="width: 25%;">
+        {#if name}
+        {name}
+        {/if}
+    </div>
     {#if column_values}
         {#each column_values as val }
-            <TableValue value={val} isLoading={false}/>
+            <TableValue value={val}/>
         {/each}
     {/if}
 

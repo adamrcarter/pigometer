@@ -1,82 +1,39 @@
-<div class="lds-grid">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-</div>
-
+<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 
 <style>
-    .lds-grid {
+.lds-ring {
   display: inline-block;
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 20px;
+  height: 20px;
 }
-.lds-grid div {
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
   position: absolute;
   width: 16px;
   height: 16px;
+  margin: 2px;
+  border: 2px solid #FF6995;
   border-radius: 50%;
-  background: #FF6995;
-  animation: lds-grid 1.2s linear infinite;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #FF6995 transparent transparent transparent;
 }
-.lds-grid div:nth-child(1) {
-  top: 8px;
-  left: 8px;
-  animation-delay: 0s;
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
 }
-.lds-grid div:nth-child(2) {
-  top: 8px;
-  left: 32px;
-  animation-delay: -0.4s;
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
 }
-.lds-grid div:nth-child(3) {
-  top: 8px;
-  left: 56px;
-  animation-delay: -0.8s;
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
 }
-.lds-grid div:nth-child(4) {
-  top: 32px;
-  left: 8px;
-  animation-delay: -0.4s;
-}
-.lds-grid div:nth-child(5) {
-  top: 32px;
-  left: 32px;
-  animation-delay: -0.8s;
-}
-.lds-grid div:nth-child(6) {
-  top: 32px;
-  left: 56px;
-  animation-delay: -1.2s;
-}
-.lds-grid div:nth-child(7) {
-  top: 56px;
-  left: 8px;
-  animation-delay: -0.8s;
-}
-.lds-grid div:nth-child(8) {
-  top: 56px;
-  left: 32px;
-  animation-delay: -1.2s;
-}
-.lds-grid div:nth-child(9) {
-  top: 56px;
-  left: 56px;
-  animation-delay: -1.6s;
-}
-@keyframes lds-grid {
-  0%, 100% {
-    opacity: 1;
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
   }
-  50% {
-    opacity: 0.5;
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
