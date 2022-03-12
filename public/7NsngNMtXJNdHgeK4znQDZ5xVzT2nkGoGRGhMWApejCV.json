@@ -1,5 +1,5 @@
 {
-    "timestamp": 1647108275582,
+    "timestamp": 1647113202518,
     "lastTx": "3AgBXdz6RoG3BicskydCv1mdacpBqraunW5MctekGyFJQrUUcX5YL6HN8kX49TQu2NQ9pGNxoFbaYpKG3DtXYYPM",
     "startTx": {
         "blockTime": 1645134616,
@@ -19,6 +19,6 @@
     "volume": 1684134974940,
     "earnings_lamports": 63482188500,
     "earnings_usdc": 0,
-    "startdate": 1645354800,
+    "startdate": 1645488000,
     "pubkey": "7NsngNMtXJNdHgeK4znQDZ5xVzT2nkGoGRGhMWApejCV"
 }

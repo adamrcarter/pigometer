@@ -1,5 +1,5 @@
 {
-    "timestamp": 1647108253774,
+    "timestamp": 1647113185657,
     "lastTx": "33GSntwyn4oYoHSPKkQN5DzzHF6SgZJ6AXdGcbYiHhurQUFxEtqnrqLopGkGeQ5y4tyEowYbMWMDE674bzHhDm6G",
     "last_usdc_tx": "33GSntwyn4oYoHSPKkQN5DzzHF6SgZJ6AXdGcbYiHhurQUFxEtqnrqLopGkGeQ5y4tyEowYbMWMDE674bzHhDm6G",
     "startTx": {
@@ -13,6 +13,6 @@
     "volume": 0,
     "earnings_lamports": 0,
     "earnings_usdc": 4300,
-    "startdate": 1645354800,
+    "startdate": 1645488000,
     "pubkey": "59TwQVuAPeJ7sjVdKCVANT32AapDgNLpVrmy7HnofAWQ"
 }

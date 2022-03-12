@@ -26,7 +26,7 @@
     const DAO = new PublicKey("DaoSrx3wBdRM8oATwYwfD8BTkHwBibVVv2SLR8LMDnLP")
     const LAMPORT_SOL_FACTOR = 1000000000
     
-     const ALPHA_TAKEOVER_TIMESTAMP = 1645354800
+     const ALPHA_TAKEOVER_TIMESTAMP = 1645488000
     
     const USDC_MINT_ADDRESS = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")
     const SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID = new PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
