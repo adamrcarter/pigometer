@@ -20,6 +20,8 @@ import TableValue from "./TableValue.svelte";
 
     let poller
 
+    $: link = `https://solscan.io/account/${pubkey?.toBase58()}`
+
 
     const apiFunc = async (_usdcPrice) =>{
         try{
@@ -70,22 +72,14 @@ import TableValue from "./TableValue.svelte";
        
 
     }
-    
-    onMount(() =>{
-        // poller = poll(apiFunc, 20000)
-    })
 
-    onDestroy(() =>{
-        // clearInterval(poller)
-    })
-    $:console.log(column_values)
 </script>
 
 <div class="row">
 
     <div style="width: 25%;">
         {#if name}
-        {name}
+        <a href={link} target="_blank">{name}</a>
         {/if}
     </div>
     {#if column_values}
@@ -105,6 +99,10 @@ import TableValue from "./TableValue.svelte";
         border-bottom: 1px #f0eded solid;
         display: flex;
 
+    }
+
+    a {
+        color: black;
     }
 
 </style>

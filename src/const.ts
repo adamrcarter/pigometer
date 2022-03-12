@@ -5,7 +5,7 @@ export const ALPHA_GOV_PUBKEY = new PublicKey("59TwQVuAPeJ7sjVdKCVANT32AapDgNLpV
 export const ROYALTIES_PUBKEY = new PublicKey("7NsngNMtXJNdHgeK4znQDZ5xVzT2nkGoGRGhMWApejCV")
 export const DAO = new PublicKey("DaoSrx3wBdRM8oATwYwfD8BTkHwBibVVv2SLR8LMDnLP")
 
-export const ALPHA_TAKEOVER_TIMESTAMP = 1645354800
+export const ALPHA_TAKEOVER_TIMESTAMP = 1645488000
                                         
 
 export const USDC_MINT_ADDRESS = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")

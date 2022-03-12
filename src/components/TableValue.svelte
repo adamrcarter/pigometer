@@ -7,8 +7,8 @@ import Spinner from "./Spinner.svelte";
     let loading = true
     
     let formatted_val = 0;
-    $: isNaN(value) || !Number.isFinite(value) ? loading = true : loading = false
-    $: formatted_val = Math.round((value / LAMPORTS_PER_SOL) *100) /100
+    $: (isNaN(value) || !Number.isFinite(value)) && formatted_val !== 0 ? loading = true : loading = false
+    $: (!isNaN(value) || Number.isFinite(value)) ? formatted_val = Math.round((value / LAMPORTS_PER_SOL) *100) /100 : null
 </script>
 
 <div class="row_val">

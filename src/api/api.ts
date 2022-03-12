@@ -215,45 +215,49 @@ export const createConnection = () =>{
 
 export const getUSDCBalance = async (conn : Connection, ownerPubkey : PublicKey)  : Promise<number> =>{
 
-    // const res = await conn.getParsedTokenAccountsByOwner(ownerPubkey, {mint : USDC_MINT_ADDRESS});
-    // const account = await PublicKey.findProgramAddress([
-    //     ownerPubkey.toBuffer(),
-    //     TOKEN_PROGRAM_ID.toBuffer(),
-    //     USDC_MINT_ADDRESS.toBuffer()
-    // ],
-    //     SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
-    // )
-    // try{
-    //     const usdcInfo =  await conn.getTokenAccountBalance(account[0]);
-    //     const amount = usdcInfo.value.uiAmount 
-    //     console.log(`${amount} USDC - wallet ${ownerPubkey.toBase58()}`)
-    //     return amount
-    // }
-    // catch(e){
-    //     console.log(`No USDC token account found in wallet ${ownerPubkey.toBase58()}`)
-    //     return 0
-    // }
-
+    const res = await conn.getParsedTokenAccountsByOwner(ownerPubkey, {mint : USDC_MINT_ADDRESS});
+    const account = await PublicKey.findProgramAddress([
+        ownerPubkey.toBuffer(),
+        TOKEN_PROGRAM_ID.toBuffer(),
+        USDC_MINT_ADDRESS.toBuffer()
+    ],
+        SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
+    )
     try{
-        const accountDetails = await axios.get(`https://public-api.solscan.io/account/tokens?account=${ownerPubkey.toBase58()}`)
-        if(accountDetails.status === 200){
-            const data : any = accountDetails.data 
-            const usdToken = data.filter(token => token.tokenAddress === USDC_MINT_ADDRESS.toBase58() )
-     
-            if(usdToken.length > 0){
-                return usdToken[0].tokenAmount.uiAmount
-            }
-            return 0;
-        }
-        else{
-             console.error(`Error account details fetching from solscan. Responseded with status ${accountDetails.status}`)
-             return 0
-
-            }
+        const usdcInfo =  await conn.getTokenAccountBalance(account[0]);
+        const amount = usdcInfo.value.uiAmount 
+        console.log(`${amount} USDC - wallet ${ownerPubkey.toBase58()}`)
+        return amount
     }
     catch(e){
-        console.error(`Error account details fetching from solscan.\n${e.message}`)
+        console.log(`No USDC token account found in wallet ${ownerPubkey.toBase58()}`)
+        return 0
     }
+    
+    /**
+     * Remove solscan because of rate limiting
+     */
+
+    // try{
+    //     const accountDetails = await axios.get(`https://public-api.solscan.io/account/tokens?account=${ownerPubkey.toBase58()}`)
+    //     if(accountDetails.status === 200){
+    //         const data : any = accountDetails.data 
+    //         const usdToken = data.filter(token => token.tokenAddress === USDC_MINT_ADDRESS.toBase58() )
+     
+    //         if(usdToken.length > 0){
+    //             return usdToken[0].tokenAmount.uiAmount
+    //         }
+    //         return 0;
+    //     }
+    //     else{
+    //          console.error(`Error account details fetching from solscan. Responseded with status ${accountDetails.status}`)
+    //          return 0
+
+    //         }
+    // }
+    // catch(e){
+    //     console.error(`Error account details fetching from solscan.\n${e.message}`)
+    // }
 
 
 

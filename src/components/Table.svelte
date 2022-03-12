@@ -32,7 +32,8 @@ import TableValue from "./TableValue.svelte";
         pubkey : PublicKey,
         last_tx: string,
         last_usdc_tx : string,
-        name : string
+        name : string,
+
     }
 
     let connection 
@@ -61,7 +62,8 @@ import TableValue from "./TableValue.svelte";
             column_values: [alphaVolLamports, _alphaEarnings, await getTotalSOLBalance(connection, ALPHA_PUBKEY, usdcPrice)],
             pubkey: ALPHA_PUBKEY,
             last_tx: alpha_index.lastTx,
-            last_usdc_tx: alpha_index.last_usdc_tx
+            last_usdc_tx: alpha_index.last_usdc_tx,
+            
         }
         rows[0] =  row
     }
@@ -132,12 +134,14 @@ import TableValue from "./TableValue.svelte";
 
     }
     const setState = async (usdcPrice) =>{
-        console.log("setting state")
 
         if(usdcPrice !== 0){
             fetchAlpha();
+            await delay(10)
             fetchRoyalties();
+            await delay(10)
             fetchGov();
+            await delay(10)
             fetchPiggyDAO();
         }
 
@@ -204,10 +208,6 @@ import TableValue from "./TableValue.svelte";
     </div>
 
     {#if !loading}
-<!--         
-        {#each rows as row}
-            <Row usdcPrice={usdcPrice} {...row} connection={connection}/>
-        {/each} -->
 
         <ListRow {usdcPrice} {rows} {connection}/>
 
@@ -236,7 +236,8 @@ import TableValue from "./TableValue.svelte";
     } */
     .table-title{
         width: 25%;
-        font-weight: 300;
+        font-weight: 500;
+
     }
 
     .total{
@@ -291,7 +292,7 @@ import TableValue from "./TableValue.svelte";
 
     .dashboard-con{
         max-width: 800px;
-        /* overflow-y: scroll; */
+        overflow-y: scroll;
         padding-top: 30px;
         padding-left: 29px;
         padding-right: 29px;
@@ -305,6 +306,7 @@ import TableValue from "./TableValue.svelte";
         height: 85vh;
         margin-top: 32px;
         position: relative;
+        z-index: 0;
     }
 
     .row{
@@ -415,22 +417,12 @@ import TableValue from "./TableValue.svelte";
 		position: relative;
     }
     @media (max-width: 640px) {
-       .item-lg{
-           font-size: 50px;
-       }
-       .card{
-            width: 90vw;
-            height: 200px;
-            margin-top: 10px;
 
-       }
-
-
-
-       .sm{
-           width: 90vw;
-           height: 100px;
-       }
+        .dashboard-con{
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: small;
+        }
        
        
     }

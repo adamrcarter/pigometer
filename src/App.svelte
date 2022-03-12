@@ -28,8 +28,8 @@ import { delay } from "./util";
 
 		<img class="ape" src="ape1.png"/>
 		<div class="col padd-4">
-		<div class="description">Developed by Professor mint, any donation is appreciated.</div>
-		<div class="address">EmDpqnBybTACHK7JVSNcQgRAXvGj17Nqn4mGFTpkfqiN</div>
+		<div class="description">Developed by Professor Mint</div>
+		<!-- <div class="address">EmDpqnBybTACHK7JVSNcQgRAXvGj17Nqn4mGFTpkfqiN</div> -->
 	</div>
 </div>
 </main>
@@ -152,11 +152,21 @@ import { delay } from "./util";
 	@media (max-width: 640px) {
 		#img-2{
 			left: -80px;
+			display: none;
 		}
-	
+
+		#img-1{
+			display: none;
+		}
+		#img-4{
+			display: none;
+		}
+
+
 
 		#img-3{
 			right: -80px;
+			display: none;
 		}
 
 	}

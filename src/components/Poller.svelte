@@ -13,8 +13,8 @@
         // const _lamports = await getPiggyBankLamports()
         // lamports = lamports > _lamports ? lamports : _lamports;
         usdtPrice = await getUSDSOLPrice();
-        floor = await getFloorMale()
-        numListedAlpha = await getNumListings()
+        // floor = await getFloorMale()
+        // numListedAlpha = await getNumListings()
 
     }
 
