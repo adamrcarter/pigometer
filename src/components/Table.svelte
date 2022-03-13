@@ -75,7 +75,7 @@ import TableValue from "./TableValue.svelte";
         const row : Row = {
             name: "Royalties",
             num_cols : 5,
-            column_values: [null, royaltiesEarnings, await getTotalSOLBalance(connection, ROYALTIES_PUBKEY, usdcPrice)],
+            column_values: [null, royaltiesEarnings * 2, await getTotalSOLBalance(connection, ROYALTIES_PUBKEY, usdcPrice)],
             pubkey: ROYALTIES_PUBKEY,
             last_tx: royal_index.lastTx,
             last_usdc_tx: royal_index.last_usdc_tx
@@ -176,6 +176,7 @@ import TableValue from "./TableValue.svelte";
     })
 
 </script>
+<!-- <div class="flex "> -->
 <div class="dashboard-con">
 
     <div class="break"></div>
@@ -228,9 +229,19 @@ import TableValue from "./TableValue.svelte";
 
 </div>
 
+<!-- </div> -->
+
 
 <style>
 
+#wallets{
+		width: auto;
+		height: 550px;
+	}
+    .flex{
+        display: flex;
+        width: 100%
+    }
     /* .centerself{
         justify-self: center;
     } */

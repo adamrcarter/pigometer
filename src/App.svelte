@@ -23,6 +23,7 @@ import { delay } from "./util";
 <Poller let:numListedAlpha={numListedAlpha} let:lamports={lamports} let:usdtPrice={usdtPrice} let:floor={floor}>
 	<Dashboard usdcPrice={usdtPrice}/>
 </Poller>
+<img id="wallets" src="Wallets.png"/>
 
 <div class="footer">
 
@@ -36,6 +37,15 @@ import { delay } from "./util";
 
 <style lang="scss">
 	main {
+
+		#wallets{
+			position: fixed;
+			right: 40px;
+			top: 180px;
+			width: auto;
+			height: 420px;
+			z-index: 1000;
+		}
 
 		.pad-4{
 			padding-left: 4px;
@@ -74,6 +84,7 @@ import { delay } from "./util";
 		// 	max-width: none;
 		// }
 	}
+
 	.footer{
 		font-size: 10px;
 		position: absolute;
