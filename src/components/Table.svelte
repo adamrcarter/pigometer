@@ -46,9 +46,7 @@ import TableValue from "./TableValue.svelte";
     let rows = []
 
    const fetchAlpha = async () =>{
-       
-        // const sigs = await getTransactionsSigToDate(ALPHA_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP)
-        // const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP)
+
         const alpha_index = (await axios.get(`${ALPHA_PUBKEY.toBase58()}.json`)).data as any
         const alphaVolLamports = alpha_index.volume;
         const _alphaEarnings = alpha_index.earnings_lamports;
@@ -110,8 +108,6 @@ import TableValue from "./TableValue.svelte";
     }
 
     const fetchGov = async () =>{
-        // const sigs = await getTransactionsSigToDate(ALPHA_GOV_PUBKEY, connection, ALPHA_TAKEOVER_TIMESTAMP);
-        // const txs = await getParsedTransactions(connection, sigs, ALPHA_TAKEOVER_TIMESTAMP);
         
         const gov_index = (await axios.get(`${ALPHA_GOV_PUBKEY.toBase58()}.json`)).data as any
         const gov_lamports= gov_index.earnings_lamports; 
@@ -148,13 +144,6 @@ import TableValue from "./TableValue.svelte";
     }
     $: sumTotal(rows);
     $: setState(usdcPrice)
-
-    // $: solPerPig = Math.round(calculateSOLPerPig(lamports) * 100000) / 100000
-    // $: usdPerPig = Math.round(calculateUSDPerPig(lamports, usdtPrice) * 100000) / 100000
-    // $: piggybankSOL = Math.round((lamports/LAMPORT_SOL_FACTOR) * 100) / 100
-    // $: averageSOLperDay = Math.round(calculateAverageSOLPerPig(lamports, new Date().getTime()/1000) * 1000) /1000
-    // $: averageUSDperDay = averageSOLperDay * usdtPrice
-    // $: maleFloor = Math.round(( floor / LAMPORT_SOL_FACTOR) * 100) / 100
 
     onMount(async () =>{
         connection =  createConnection();
@@ -236,10 +225,10 @@ import TableValue from "./TableValue.svelte";
 
 
 <style>
-.invisible{
-    visibility: hidden;
-}
-.wallets{
+    .invisible{
+        visibility: hidden;
+    }
+    .wallets{
 		width: auto;
 		height: 422px;
         margin-top:54px;
@@ -250,9 +239,7 @@ import TableValue from "./TableValue.svelte";
         margin: auto;
         flex-grow: 1;
     }
-    /* .centerself{
-        justify-self: center;
-    } */
+
     .table-title{
         width: 25%;
         font-weight: 500;
@@ -351,95 +338,9 @@ import TableValue from "./TableValue.svelte";
         display: flex;
         justify-content: center;
         align-items: center;
-
-        /* flex-wrap: wrap; */
-    }
-
-    /* .mid{
-        width:70%;
-        margin: auto;
-    } */
-
-    .center{
-        justify-content: center;
-        align-items: center;
-    }
-
-    .even{
-        justify-content: space-evenly;
-        align-items: center;
-        padding-bottom: 60px;
     }
 
 
-    .card{
-        padding:10px;
-        border: 1px solid #fff;
-        border-radius: 10px;
-        background-color: rgb(238, 238, 238);
-        width: 500px;
-        /* margin: auto; */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 300px;
-        -webkit-box-shadow: 10px 10px 44px -5px rgba(0,0,0,0.75);
-        -moz-box-shadow: 10px 10px 44px -5px rgba(0,0,0,0.75);
-        box-shadow: 10px 10px 44px -5px rgba(0,0,0,0.75);
-        margin-top: 38px;
-        z-index: 100;
-
-    }
-
-
-    .sm{
-        width: 300px;
-        height: 100px;
-
-    }
-
-
-    .col{
-        flex-direction: column;
-    }
-
-    .row{
-        flex-direction: row;
-    }
-
-    .lg{
-        width:30vw;
-        min-width: 300px;
-    }
-
-    .paddmd{
-        padding-top: 50px;
-    }
-
-    .center{
-        justify-content: center;
-        align-items: center;
-    }
-
-    .item{
-        padding: 10px;
-        padding-bottom: 5px;
-        color:rgb(37, 37, 37);
-        
-    }
-    .item-lg{
-        font-size: 100px;
-    }
-
-    .item-md{
-        font-size: 30px;
-    }
-    .cont{
-        height: 80%;
-        z-index: 100;
-		position: relative;
-    }
     @media (max-width: 640px) {
 
         .dashboard-con{
@@ -447,8 +348,15 @@ import TableValue from "./TableValue.svelte";
             padding-right: 10px;
             font-size: small;
         }
+        
        
        
+    }
+
+    @media (max-width: 800px){
+        .dashboard-con{
+            min-width: 95%;
+        }
     }
     @media (max-width: 1400px){
 		.wallets{
