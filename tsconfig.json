@@ -3,12 +3,14 @@
 	"exclude": ["node_modules/*", "__sapper__/*", "public/*"],
 	"compilerOptions": {
 		"moduleResolution": "node",
+	
 		"target": "es2017",
 		"importsNotUsedAsValues": "remove",
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"sourceMap": true,
 		"strict": false,
+		"allowJs": true,
 		"baseUrl": ".",
 		"paths": {
 			"src/*": ["src/*"]
@@ -20,7 +22,8 @@
 			"svelte/transition",
 			"svelte/animate",
 			"svelte/easing"
-		]
+		],
+		
 	},
 
 	// Fixes errors when changing `module` to ES in the above compiler options

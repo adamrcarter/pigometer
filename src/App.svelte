@@ -1,14 +1,19 @@
 <script lang="ts">
-import Dashboard from "./components/Dashboard.svelte";
-import Poller from "./components/Poller.svelte";
+import { ParsedTransactionWithMeta } from "@solana/web3.js";
 
-	let name: string = 'world';
+import { createConnection, getTransactionsSigToDate } from "./api/api";
+
+import Dashboard from "./components/Table.svelte";
+import Poller from "./components/Poller.svelte";
+import { ALPHA_PUBKEY, ALPHA_TAKEOVER_TIMESTAMP } from "./const";
+import { delay } from "./util";
+
 </script>
 
 <main> 
 	<img id="img-1" src="pig1.png">
-	<img id="img-2" src="pig2.png">
-	<img id="img-3" src="pig3.png">
+	<img id="img-2" src="pig3.png">
+	<img id="img-3" src="pig2.png">
 	<img id="img-4" src="pig4.png">
 
 	<div class='title'>
@@ -16,21 +21,29 @@ import Poller from "./components/Poller.svelte";
 	</div>
 
 <Poller let:numListedAlpha={numListedAlpha} let:lamports={lamports} let:usdtPrice={usdtPrice} let:floor={floor}>
-	<Dashboard {lamports} {usdtPrice} {floor} {numListedAlpha}/>
+	<Dashboard usdcPrice={usdtPrice}/>
 </Poller>
 
 <div class="footer">
 
 		<img class="ape" src="ape1.png"/>
 		<div class="col padd-4">
-		<div class="description">Developed by Professor mint, any donation is appreciated.</div>
-		<div class="address">EmDpqnBybTACHK7JVSNcQgRAXvGj17Nqn4mGFTpkfqiN</div>
+		<div class="description">Developed by Professor Mint</div>
 	</div>
 </div>
 </main>
 
 <style lang="scss">
 	main {
+
+		#wallets{
+			position: fixed;
+			right: 40px;
+			top: 180px;
+			width: auto;
+			height: 420px;
+			z-index: 1000;
+		}
 
 		.pad-4{
 			padding-left: 4px;
@@ -69,6 +82,7 @@ import Poller from "./components/Poller.svelte";
 		// 	max-width: none;
 		// }
 	}
+
 	.footer{
 		font-size: 10px;
 		position: absolute;
@@ -147,12 +161,24 @@ import Poller from "./components/Poller.svelte";
 	@media (max-width: 640px) {
 		#img-2{
 			left: -80px;
+			display: none;
 		}
-	
+
+		#img-1{
+			display: none;
+		}
+		#img-4{
+			display: none;
+		}
+
+
 
 		#img-3{
 			right: -80px;
+			display: none;
 		}
+
+
 
 	}
 	@media (max-width: 1024px) {
@@ -164,6 +190,29 @@ import Poller from "./components/Poller.svelte";
 		   z-index: 10;
 		   bottom: 0;
        }
+	   #img-2{
+			display: none;
+		}
+
+		#img-1{
+			display: none;
+		}
+		#img-4{
+			display: none;
+		}
+
+
+
+		#img-3{
+			display: none;
+		}
+
+	}
+
+	@media (max-width: 1400px){
+		#wallets{
+			display: none;
+		}
 	}
 
 

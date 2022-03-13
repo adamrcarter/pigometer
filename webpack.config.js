@@ -1,4 +1,3 @@
-
 /**
  * Babel will compile modern JavaScript down to a format compatible with older browsers, but it will also increase your
  * final bundle size and build speed. Edit the `browserslist` property in the package.json file to define which
@@ -76,7 +75,7 @@ const config = {
 		fallback: { 
 			"path": false,
 			"crypto": false,
-
+			"stream": require.resolve("stream-browserify") 
 		},
 		extensions: ['.mjs', '.js', '.ts', '.svelte'],
 		mainFields: ['svelte', 'browser', 'module', 'main']
