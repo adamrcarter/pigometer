@@ -23,7 +23,6 @@ import { delay } from "./util";
 <Poller let:numListedAlpha={numListedAlpha} let:lamports={lamports} let:usdtPrice={usdtPrice} let:floor={floor}>
 	<Dashboard usdcPrice={usdtPrice}/>
 </Poller>
-<img id="wallets" src="Wallets.png"/>
 
 <div class="footer">
 

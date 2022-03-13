@@ -176,7 +176,9 @@ import TableValue from "./TableValue.svelte";
     })
 
 </script>
-<!-- <div class="flex "> -->
+<div class="flex ">
+    <img class="wallets invisible" src="Wallets.png"/>
+
 <div class="dashboard-con">
 
     <div class="break"></div>
@@ -228,19 +230,25 @@ import TableValue from "./TableValue.svelte";
      </div>
 
 </div>
+<img class="wallets" src="Wallets.png"/>
 
-<!-- </div> -->
+</div>
 
 
 <style>
-
-#wallets{
+.invisible{
+    visibility: hidden;
+}
+.wallets{
 		width: auto;
-		height: 550px;
+		height: 422px;
+        margin-top:54px;
+        z-index: 10000;
 	}
     .flex{
         display: flex;
-        width: 100%
+        margin: auto;
+        flex-grow: 1;
     }
     /* .centerself{
         justify-self: center;
@@ -310,7 +318,7 @@ import TableValue from "./TableValue.svelte";
         -ms-overflow-style: none;
         height: 50px;
         scrollbar-width: none;
-        margin: auto;
+        /* margin: auto; */
         background-color: #fff;
         max-height: 550px;
         border-radius: 15px;
@@ -318,6 +326,8 @@ import TableValue from "./TableValue.svelte";
         margin-top: 32px;
         position: relative;
         z-index: 0;
+        width: 800px;
+        min-width: 800px;
     }
 
     .row{
@@ -339,7 +349,10 @@ import TableValue from "./TableValue.svelte";
 
     .flex{
         display: flex;
-        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+        /* flex-wrap: wrap; */
     }
 
     /* .mid{
@@ -437,6 +450,11 @@ import TableValue from "./TableValue.svelte";
        
        
     }
+    @media (max-width: 1400px){
+		.wallets{
+			display: none;
+		}
+	}
 
 
 
