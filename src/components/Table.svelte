@@ -173,7 +173,8 @@ import TableValue from "./TableValue.svelte";
     <div class="break"></div>
 
     <div class ="table-title-con">
-        <div class="table-title"></div>
+        <div class="table-title sm-title">
+        </div>
         <div class="table-title"></div>
         <div class="table-title">
             Performance
@@ -210,7 +211,9 @@ import TableValue from "./TableValue.svelte";
         </div>
     {/if}
      <div class="total row border-btm-none">
-        <div class="table-title weight-hv"></div>
+        <div class="table-title sm-title">
+            Data calculated since 21/02/2022 00:00:00
+        </div>
         <div class="table-title weight-hv"></div>
          <div class="table-title weight-hv">
             Total
@@ -228,6 +231,7 @@ import TableValue from "./TableValue.svelte";
     .invisible{
         visibility: hidden;
     }
+
     .wallets{
 		width: auto;
 		height: 422px;
@@ -243,6 +247,11 @@ import TableValue from "./TableValue.svelte";
     .table-title{
         width: 25%;
         font-weight: 500;
+
+    }
+    .sm-title{
+        font-size: 10px;
+        font-weight: 300;
 
     }
 
