@@ -180,6 +180,8 @@ import { delay } from "./util";
 			display: none;
 		}
 
+
+
 	}
 	@media (max-width: 1024px) {
 
@@ -190,6 +192,29 @@ import { delay } from "./util";
 		   z-index: 10;
 		   bottom: 0;
        }
+	   #img-2{
+			display: none;
+		}
+
+		#img-1{
+			display: none;
+		}
+		#img-4{
+			display: none;
+		}
+
+
+
+		#img-3{
+			display: none;
+		}
+
+	}
+
+	@media (max-width: 1400px){
+		#wallets{
+			display: none;
+		}
 	}
 
 
