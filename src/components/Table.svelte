@@ -99,10 +99,11 @@ import TableValue from "./TableValue.svelte";
     const sumTotal = (rows : Row[]) =>{
         let _total = 0
         for(const row of rows){
-            if(row){
+            if(row && !isNaN(row.column_values[row.column_values.length -1])){
                 _total = _total + row.column_values[row.column_values.length -1]
-
+                
             }
+            console.log("total", _total)
         }
         total = _total
     }
