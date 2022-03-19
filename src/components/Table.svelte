@@ -177,11 +177,11 @@ import TableValue from "./TableValue.svelte";
         <div class="table-title sm-title">
         </div>
         <div class="table-title"></div>
-        <div class="table-title">
-            Performance
+        <div class="table-title red">
+            ALL TIME*
         </div>
-        <div class="table-title">
-            Position
+        <div class="table-title red">
+            CURRENT WEEK
         </div>
 
     </div>
@@ -213,7 +213,7 @@ import TableValue from "./TableValue.svelte";
     {/if}
      <div class="total row border-btm-none">
         <div class="table-title sm-title">
-            Data calculated since 21/02/2022 00:00:00
+            <span class="red">*</span>Data calculated since 21/02/2022 00:00:00
         </div>
         <div class="table-title weight-hv"></div>
          <div class="table-title weight-hv">
@@ -248,6 +248,10 @@ import TableValue from "./TableValue.svelte";
     .table-title{
         width: 25%;
         font-weight: 500;
+
+    }
+    .red{
+        color: rgb(202, 31, 31);
 
     }
     .sm-title{
