@@ -1,7 +1,7 @@
 {
-    "timestamp": 1647766756363,
-    "lastTx": "4y3e6jnm242ji9R3DT9LQxinp3rvBX3ykKPbFvKn9zED92NTK62jLMwik4Hkqe5TdHuYygapxeN4RvjqMqtVETSL",
-    "last_usdc_tx": "2VqYvY29aLcbfxnFEKaiezEyJyuPhZUncrYpiMriExG5BMgTztHYPFV6LuyQkDw2uTMu5tMupiqPs2cShHsoDupD",
+    "timestamp": 1647768238944,
+    "lastTx": "3gWeHJLzw9XTK4v789LXx3XVW5h9bSwZGLSCm1ChnRdbJfSdhbHxfUQ1s7i8sycmEMk3BXP1b5CMGsmERDFDnLyk",
+    "last_usdc_tx": "3gWeHJLzw9XTK4v789LXx3XVW5h9bSwZGLSCm1ChnRdbJfSdhbHxfUQ1s7i8sycmEMk3BXP1b5CMGsmERDFDnLyk",
     "startTx": {
         "blockTime": 1645135627,
         "confirmationStatus": "finalized",
