@@ -1,6 +1,6 @@
 {
-    "timestamp": 1650443665429,
-    "lastTx": "2E3Fcej7YoVJfFXZbHhtXbDseMs4uZVDo7smP9HeCtcvq22Q7jgZ7XeAodwxQnqz1mBySp1JPyGb9ddtkwiS7JC1",
+    "timestamp": 1650444753543,
+    "lastTx": "2NqGj7Fdhj5ADrRTVT9q63HrgX24P9sYYgTYaY9Ue2TZQMXTJtM677J26tNa1HXB8t51kkw55ZwfwQhDbjzp3cbE",
     "last_usdc_tx": "2dbsg7xutgpsVEYmotrfLwQvYnp9EvUYvUeRxdVokvCHBE7sveRMmaXazod9xhRvyzXGaezHLjuxQHLqYymcY4D",
     "startTx": {
         "blockTime": 1645135627,
@@ -10,7 +10,7 @@
         "signature": "oR7DLwawGKhCMado928Z9mBfiVsvu4ffsQFsGnQBPcMFJr6phBCYpt2QgNJqr3btoPnthbouNcmMbTvcCtKuWGm",
         "slot": 121302607
     },
-    "volume": 3984629220506,
+    "volume": 3985676220505,
     "earnings_lamports": 651895083812,
     "earnings_usdc": 126923.22546100001,
     "startdate": 1645488000,
