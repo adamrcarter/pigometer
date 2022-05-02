@@ -1,6 +1,6 @@
 {
-    "timestamp": 1651506741899,
-    "lastTx": "5KZbm13ot2uVRF9Ba429fVA6eCiWuiGndotFacehS61XZz492DygXAH7DyfXKTxvPF17dMVH3svCGYofaJFQWw9p",
+    "timestamp": 1651508584331,
+    "lastTx": "5opLRyEVKUFiouaHQVJorrHAVovDCTG8fFwqDVJn76V9XmumhhQFiKdnejezniQ8RihGUzW2BKS93JeX9EhEbpv5",
     "startTx": {
         "blockTime": 1645403082,
         "confirmationStatus": "finalized",
@@ -9,7 +9,7 @@
         "signature": "45bkwsqfSRv145wiNHPhjTvqsfMMYejXuRo3sZEU8PiZdJUK1k4Dmg2Z9efw9seKydKS4szWNCsW9tvNG7DHwGXw",
         "slot": 121758435
     },
-    "volume": 13504693422493,
+    "volume": 13505993422493,
     "earnings_lamports": 252672321000,
     "earnings_usdc": 0,
     "startdate": 1645488000,
